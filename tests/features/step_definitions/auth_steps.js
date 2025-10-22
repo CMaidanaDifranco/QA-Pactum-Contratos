@@ -88,7 +88,18 @@ Then('debería guardar el token de acceso para uso futuro', function () {
   const response = this.getResponse();
   const accessToken = response.body.access_token;
   this.setAccessToken(accessToken);
-  console.log('💾 Token de acceso guardado para uso futuro');
+  
+  // También guardar en archivo temporal para uso entre ejecuciones
+  const fs = require('fs');
+  const path = require('path');
+  const tokenFile = path.join(__dirname, '../../temp_token.txt');
+  
+  try {
+    fs.writeFileSync(tokenFile, accessToken, 'utf8');
+    console.log('💾 Token de acceso guardado para uso futuro (archivo temporal)');
+  } catch (error) {
+    console.log('⚠️ No se pudo guardar el token en archivo temporal:', error.message);
+  }
 });
 
 Then('la respuesta debería contener un mensaje de error', function () {

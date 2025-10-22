@@ -16,7 +16,10 @@
     "test:cucumber:api": "cucumber-js tests/features/api/*.feature --config cucumber.js",
     "test:cucumber:smoke": "cucumber-js --tags @smoke --config cucumber.js",
     "test:cucumber:dev": "cucumber-js --config cucumber.js --profile development",
-    "test:cucumber:ci": "cucumber-js --config cucumber.js --profile ci"
+    "test:cucumber:ci": "cucumber-js --config cucumber.js --profile ci",
+    "test:cucumber:auth-token": "cucumber-js tests/features/ --tags @auth-token --config cucumber.js",
+    "test:cucumber:eligibility-flow": "cucumber-js tests/features/ --tags @eligibility-flow --config cucumber.js",
+    "test:cucumber:auth-to-eligibility": "cucumber-js tests/features/ --tags @auth-token --config cucumber.js && cucumber-js tests/features/ --tags @eligibility-flow --config cucumber.js"
   },
   "keywords": [
     "qa",

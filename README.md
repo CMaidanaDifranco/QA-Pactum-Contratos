@@ -61,6 +61,11 @@ npx cucumber-js tests/features/ --tags "@auth and @smoke"
 npx cucumber-js tests/features/ --tags "@auth or @contracts"
 npx cucumber-js tests/features/ --tags "@eligibility and @smoke"
 
+# Flujos secuenciales (autenticación + funcionalidad)
+npx cucumber-js tests/features/ --tags "@auth-token"
+npx cucumber-js tests/features/ --tags "@eligibility-flow"
+npm run test:cucumber:auth-to-eligibility
+
 # Modo dry-run (sin ejecutar)
 npx cucumber-js tests/features/ --dry-run
 ```

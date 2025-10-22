@@ -7,7 +7,7 @@ Feature: API de Elegibilidad Comafi
     Given tengo un token de acceso válido
     And el servicio de elegibilidad está disponible
 
-  @smoke @eligibility
+  @smoke @eligibility @eligibility-flow
   Scenario: Consultar elegibilidad con CUIT válido
     Given tengo datos de elegibilidad válidos
     When envío una petición POST a "/api/v1/products/loans/eligibility"

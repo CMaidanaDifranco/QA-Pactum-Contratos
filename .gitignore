@@ -41,3 +41,6 @@ pids/
 
 # Optional eslint cache
 .eslintcache
+
+# Temporary token file
+tests/temp_token.txt

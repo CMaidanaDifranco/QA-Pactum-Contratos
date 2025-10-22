@@ -7,7 +7,7 @@ Feature: API de Autenticación
     Given el servicio de autenticación está disponible
     And tengo credenciales de cliente válidas
 
-  @smoke @auth
+  @smoke @auth @auth-token
   Scenario: Obtener exitosamente token de acceso con credenciales de cliente
     When envío una petición POST al endpoint de autenticación
     Then debería recibir un código de estado 200

@@ -3,8 +3,25 @@ const { expect } = require('chai');
 
 // Pasos comunes de API
 Given('tengo un token de acceso válido', async function () {
-  // Este paso asume que el token ya fue obtenido en escenarios de autenticación
-  const accessToken = this.getAccessToken();
+  // Primero intenta obtener el token del contexto actual
+  let accessToken = this.getAccessToken();
+  
+  // Si no hay token en el contexto, intenta leerlo del archivo temporal
+  if (!accessToken) {
+    const fs = require('fs');
+    const path = require('path');
+    const tokenFile = path.join(__dirname, '../../temp_token.txt');
+    
+    try {
+      if (fs.existsSync(tokenFile)) {
+        accessToken = fs.readFileSync(tokenFile, 'utf8').trim();
+        console.log('🔑 Token de acceso leído desde archivo temporal');
+      }
+    } catch (error) {
+      console.log('⚠️ No se pudo leer el token del archivo temporal');
+    }
+  }
+  
   if (!accessToken) {
     throw new Error('No hay token de acceso disponible. Por favor ejecute primero los escenarios de autenticación.');
   }
