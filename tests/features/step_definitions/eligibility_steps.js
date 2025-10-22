@@ -10,15 +10,17 @@ Given('el servicio de elegibilidad está disponible', async function () {
 
 Given('tengo datos de elegibilidad válidos', async function () {
   this.setRequestData({
-    eligibility: {
-      cuit: '30522211563',
-      credit_line_id: 441,
-      merchant_cuit: '30646328450'
-    }
+    cuit: '30522211563',
+    credit_line_id: 441,
+    merchant_cuit: '30646328450'
   });
   
   // Headers específicos para elegibilidad (sin sobrescribir Authorization)
   this.setHeaders({
+    'User-Agent': 'PostmanRuntime/7.49.0',
+    'Accept': '*/*',
+    'Accept-Encoding': 'gzip, deflate, br',
+    'Connection': 'keep-alive',
     'trace-id': '58045aa1-a187-4104-a96f-2741fd3a55ad',
     'operation-document-type': 'CUIT',
     'operation-document-number': '30694416159',
