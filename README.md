@@ -21,7 +21,6 @@ Repositorio de pruebas de automatización QA con Pactum.js nativo y BDD con Cucu
 │   │   ├── auth/              # Features de autenticación
 │   │   │   └── comafi-authentication.feature
 │   │   ├── api/               # Features de APIs
-│   │   │   ├── contracts.feature
 │   │   │   ├── comafi-eligibility.feature
 │   │   │   └── comafi-simulacion.feature
 │   │   ├── step_definitions/  # Definiciones de pasos
@@ -63,21 +62,19 @@ npx cucumber-js tests/features/ --profile development
 
 # Ejecutar features específicos
 npx cucumber-js tests/features/auth/comafi-authentication.feature
-npx cucumber-js tests/features/api/contracts.feature
 npx cucumber-js tests/features/api/comafi-eligibility.feature
 npx cucumber-js tests/features/api/comafi-simulacion.feature
 
 # Ejecutar por tags (IMPORTANTE: incluir la ruta)
 npx cucumber-js tests/features/ --tags "@smoke"
 npx cucumber-js tests/features/ --tags "@auth"
-npx cucumber-js tests/features/ --tags "@contracts"
 npx cucumber-js tests/features/ --tags "@eligibility"
 npx cucumber-js tests/features/ --tags "@simulation"
 
 # Combinar tags
 npx cucumber-js tests/features/ --tags "@auth and @smoke"
-npx cucumber-js tests/features/ --tags "@auth or @contracts"
 npx cucumber-js tests/features/ --tags "@eligibility and @smoke"
+npx cucumber-js tests/features/ --tags "@simulation and @smoke"
 
 # Flujos secuenciales (autenticación + funcionalidad)
 npx cucumber-js tests/features/ --tags "@auth-token"
@@ -169,11 +166,6 @@ NODE_ENV=production npx cucumber-js tests/features/ --profile production
 - **Tests de rendimiento** (tiempo de respuesta)
 - **Persistencia del token** para uso en tests posteriores
 
-### 📄 Gestión de Contratos (BDD)
-**Feature:** `tests/features/api/contracts.feature`
-- **CRUD completo** de contratos
-- **Autenticación requerida** para todas las operaciones
-- **Validaciones de respuesta** y códigos de estado
 - **Datos de prueba** predefinidos
 
 ### 🏦 Elegibilidad Comafi (BDD)
@@ -197,7 +189,6 @@ NODE_ENV=production npx cucumber-js tests/features/ --profile production
 ### Etiquetas por Funcionalidad
 - `@smoke`: Tests críticos de humo
 - `@auth`: Tests de autenticación
-- `@contracts`: Tests de contratos
 - `@eligibility`: Tests de elegibilidad
 - `@simulation`: Tests de simulación
 - `@negative`: Tests de casos negativos
@@ -439,11 +430,6 @@ Feature: API de Contratos
     Given tengo un token de acceso válido
     And el servicio de contratos está disponible
 
-  @smoke @contracts
-  Scenario: Recuperar lista de contratos
-    When envío una petición GET a "/api/contracts"
-    Then debería recibir un código de estado 200
-    And la respuesta debería contener una lista de contratos
 ```
 
 ## 📝 Notas
