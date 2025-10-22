@@ -87,10 +87,10 @@ function CustomWorld({ attach, parameters }) {
       request = request.withQueryParams(options.queryParams);
     }
     
-    // Configurar timeout específico para endpoints de simulación
-    if (endpoint.includes('/simulation')) {
-      request = request.withRequestTimeout(10000); // 10 segundos para simulación
-      console.log('⏱️ Timeout configurado a 10 segundos para endpoint de simulación');
+    // Configurar timeout específico para endpoints de simulación y elegibilidad
+    if (endpoint.includes('/simulation') || endpoint.includes('/eligibility')) {
+      request = request.withRequestTimeout(10000); // 10 segundos para simulación y elegibilidad
+      console.log('⏱️ Timeout configurado a 10 segundos para endpoint de simulación/elegibilidad');
     }
     
     // Ejecutar solicitud
