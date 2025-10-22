@@ -22,11 +22,13 @@ Repositorio de pruebas de automatización QA con Pactum.js nativo y BDD con Cucu
 │   │   │   └── comafi-authentication.feature
 │   │   ├── api/               # Features de APIs
 │   │   │   ├── contracts.feature
-│   │   │   └── comafi-eligibility.feature
+│   │   │   ├── comafi-eligibility.feature
+│   │   │   └── comafi-simulacion.feature
 │   │   ├── step_definitions/  # Definiciones de pasos
 │   │   │   ├── auth_steps.js
 │   │   │   ├── api_steps.js
-│   │   │   └── eligibility_steps.js
+│   │   │   ├── eligibility_steps.js
+│   │   │   └── simulation_steps.js
 │   │   └── support/           # Configuración y helpers
 │   │       ├── hooks.js
 │   │       ├── world.js
@@ -62,12 +64,15 @@ npx cucumber-js tests/features/ --profile development
 # Ejecutar features específicos
 npx cucumber-js tests/features/auth/comafi-authentication.feature
 npx cucumber-js tests/features/api/contracts.feature
+npx cucumber-js tests/features/api/comafi-eligibility.feature
+npx cucumber-js tests/features/api/comafi-simulacion.feature
 
 # Ejecutar por tags (IMPORTANTE: incluir la ruta)
 npx cucumber-js tests/features/ --tags "@smoke"
 npx cucumber-js tests/features/ --tags "@auth"
 npx cucumber-js tests/features/ --tags "@contracts"
 npx cucumber-js tests/features/ --tags "@eligibility"
+npx cucumber-js tests/features/ --tags "@simulation"
 
 # Combinar tags
 npx cucumber-js tests/features/ --tags "@auth and @smoke"
@@ -77,7 +82,9 @@ npx cucumber-js tests/features/ --tags "@eligibility and @smoke"
 # Flujos secuenciales (autenticación + funcionalidad)
 npx cucumber-js tests/features/ --tags "@auth-token"
 npx cucumber-js tests/features/ --tags "@eligibility-flow"
+npx cucumber-js tests/features/ --tags "@simulation-flow"
 npm run test:cucumber:auth-to-eligibility
+npm run test:cucumber:auth-to-simulation
 
 # Modo dry-run (sin ejecutar)
 npx cucumber-js tests/features/ --dry-run
@@ -177,6 +184,14 @@ NODE_ENV=production npx cucumber-js tests/features/ --profile production
 - **Casos positivos y negativos** con diferentes CUITs
 - **Validación de estructura** completa de respuesta JSON
 
+### 📊 Simulación Comafi (BDD)
+**Feature:** `tests/features/api/comafi-simulacion.feature`
+- **Simulación de préstamos** con datos de financiamiento
+- **Autenticación requerida** con token Bearer
+- **Validación de parámetros** de simulación (monto, cuotas, tasa)
+- **Cálculo de condiciones** de financiamiento
+- **Validación de estructura** completa de respuesta JSON
+
 ## 🏷️ Etiquetas Disponibles
 
 ### Etiquetas por Funcionalidad
@@ -184,6 +199,7 @@ NODE_ENV=production npx cucumber-js tests/features/ --profile production
 - `@auth`: Tests de autenticación
 - `@contracts`: Tests de contratos
 - `@eligibility`: Tests de elegibilidad
+- `@simulation`: Tests de simulación
 - `@negative`: Tests de casos negativos
 - `@performance`: Tests de rendimiento
 - `@token-validation`: Tests de validación de tokens
@@ -191,7 +207,9 @@ NODE_ENV=production npx cucumber-js tests/features/ --profile production
 ### Etiquetas de Flujo Secuencial
 - `@auth-token`: Ejecuta solo el escenario que obtiene el token
 - `@eligibility-flow`: Ejecuta el flujo de elegibilidad
+- `@simulation-flow`: Ejecuta el flujo de simulación
 - `@auth-to-eligibility`: Ejecuta autenticación + elegibilidad en secuencia
+- `@auth-to-simulation`: Ejecuta autenticación + simulación en secuencia
 
 ### Comandos por Etiquetas
 ```bash
