@@ -1,6 +1,6 @@
-Feature: API de Autenticación
+Feature: API de Autenticación Comafi
   Como usuario del sistema
-  Quiero autenticarme con la API
+  Quiero autenticarme con la API de Comafi
   Para poder acceder a recursos protegidos
 
   Background:

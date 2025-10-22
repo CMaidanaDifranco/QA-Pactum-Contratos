@@ -19,7 +19,7 @@ Repositorio de pruebas de automatización QA con Pactum.js nativo y BDD con Cucu
 ├── tests/
 │   ├── features/              # Tests BDD con Cucumber/Gherkin
 │   │   ├── auth/              # Features de autenticación
-│   │   │   └── authentication.feature
+│   │   │   └── comafi-authentication.feature
 │   │   ├── api/               # Features de APIs
 │   │   │   ├── contracts.feature
 │   │   │   └── comafi-eligibility.feature
@@ -60,7 +60,7 @@ npx cucumber-js tests/features/
 npx cucumber-js tests/features/ --profile development
 
 # Ejecutar features específicos
-npx cucumber-js tests/features/auth/authentication.feature
+npx cucumber-js tests/features/auth/comafi-authentication.feature
 npx cucumber-js tests/features/api/contracts.feature
 
 # Ejecutar por tags (IMPORTANTE: incluir la ruta)
@@ -149,7 +149,7 @@ NODE_ENV=production npx cucumber-js tests/features/ --profile production
 ## 📋 Tests Disponibles
 
 ### 🔐 Autenticación OAuth2 (BDD)
-**Feature:** `tests/features/auth/authentication.feature`
+**Feature:** `tests/features/auth/comafi-authentication.feature`
 - **Obtención de token** con credenciales válidas
 - **Validación completa** de estructura del token response:
   - `access_token` (string)
