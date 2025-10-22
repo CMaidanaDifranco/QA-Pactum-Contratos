@@ -1,0 +1,136 @@
+[
+  {
+    "description": "  Como usuario del sistema\n  Quiero autenticarme con la API de Comafi\n  Para poder acceder a recursos protegidos",
+    "keyword": "Feature",
+    "name": "API de Autenticación Comafi",
+    "line": 1,
+    "id": "api-de-autenticación-comafi",
+    "tags": [],
+    "uri": "tests\\features\\auth\\comafi-authentication.feature",
+    "elements": [
+      {
+        "id": "api-de-autenticación-comafi;obtener-exitosamente-token-de-acceso-con-credenciales-de-cliente",
+        "keyword": "Scenario",
+        "line": 11,
+        "name": "Obtener exitosamente token de acceso con credenciales de cliente",
+        "tags": [
+          {
+            "name": "@smoke",
+            "line": 10
+          },
+          {
+            "name": "@auth",
+            "line": 10
+          },
+          {
+            "name": "@auth-token",
+            "line": 10
+          }
+        ],
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "match": {
+              "location": "tests\\features\\support\\hooks.js:15"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 7,
+            "name": "el servicio de autenticación está disponible",
+            "match": {
+              "location": "tests\\features\\step_definitions\\auth_steps.js:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 8,
+            "name": "tengo credenciales de cliente válidas",
+            "match": {
+              "location": "tests\\features\\step_definitions\\auth_steps.js:11"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 12,
+            "name": "envío una petición POST al endpoint de autenticación",
+            "match": {
+              "location": "tests\\features\\step_definitions\\auth_steps.js:37"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 294000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 13,
+            "name": "debería recibir un código de estado 200",
+            "match": {
+              "location": "tests\\features\\step_definitions\\auth_steps.js:45"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 14,
+            "name": "la respuesta debería contener un token de acceso válido",
+            "match": {
+              "location": "tests\\features\\step_definitions\\auth_steps.js:50"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 15,
+            "name": "debería guardar el token de acceso para uso futuro",
+            "match": {
+              "location": "tests\\features\\step_definitions\\auth_steps.js:87"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 3000000
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "match": {
+              "location": "tests\\features\\support\\hooks.js:30"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 0
+            }
+          }
+        ]
+      }
+    ]
+  }
+]
