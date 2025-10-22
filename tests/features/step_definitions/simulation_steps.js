@@ -71,61 +71,104 @@ Given('tengo datos de simulación inválidos', async function () {
 // Pasos de validación de respuesta
 Then('la respuesta debería contener datos de simulación válidos', function () {
   const response = this.getResponse();
-  expect(response.body).to.have.property('currency_code');
-  expect(response.body).to.have.property('amount');
-  expect(response.body).to.have.property('installments');
+  expect(response.body).to.have.property('id_simulation');
+  expect(response.body).to.have.property('total_amount');
+  expect(response.body).to.have.property('credit_net_amount');
   console.log('✅ Datos de simulación válidos recibidos');
 });
 
 Then('la respuesta debería contener información de cuotas', function () {
   const response = this.getResponse();
   expect(response.body).to.have.property('installments');
-  expect(response.body.installments).to.be.a('number');
-  expect(response.body.installments).to.be.greaterThan(0);
+  expect(response.body.installments).to.be.a('string');
+  expect(response.body.installments).to.not.be.empty;
   console.log(`✅ Información de cuotas recibida: ${response.body.installments}`);
 });
 
 Then('la respuesta debería contener información de intereses', function () {
   const response = this.getResponse();
-  expect(response.body).to.have.property('interest_rate');
-  expect(response.body.interest_rate).to.be.a('number');
-  expect(response.body.interest_rate).to.be.greaterThan(0);
-  console.log(`✅ Información de intereses recibida: ${response.body.interest_rate}%`);
+  expect(response.body).to.have.property('tna');
+  expect(response.body).to.have.property('tea');
+  expect(response.body).to.have.property('tem');
+  expect(response.body.tna).to.be.a('number');
+  expect(response.body.tea).to.be.a('number');
+  expect(response.body.tem).to.be.a('number');
+  console.log(`✅ Información de intereses recibida - TNA: ${response.body.tna}%, TEA: ${response.body.tea}%, TEM: ${response.body.tem}%`);
 });
 
-Then('la respuesta debería contener el campo currency_code', function () {
+Then('la respuesta debería contener información de montos', function () {
   const response = this.getResponse();
-  expect(response.body).to.have.property('currency_code');
-  expect(response.body.currency_code).to.be.a('string');
-  console.log(`✅ Campo currency_code presente: ${response.body.currency_code}`);
+  expect(response.body).to.have.property('credit_net_amount');
+  expect(response.body).to.have.property('total_amount');
+  expect(response.body).to.have.property('total_interest_amount');
+  expect(response.body).to.have.property('total_fee_amount');
+  expect(response.body.credit_net_amount).to.be.a('number');
+  expect(response.body.total_amount).to.be.a('number');
+  console.log(`✅ Información de montos recibida - Neto: $${response.body.credit_net_amount}, Total: $${response.body.total_amount}`);
 });
 
-Then('la respuesta debería contener el campo amount', function () {
+Then('la respuesta debería contener el campo id_simulation', function () {
   const response = this.getResponse();
-  expect(response.body).to.have.property('amount');
-  expect(response.body.amount).to.be.a('number');
-  console.log(`✅ Campo amount presente: ${response.body.amount}`);
+  expect(response.body).to.have.property('id_simulation');
+  expect(response.body.id_simulation).to.be.a('string');
+  expect(response.body.id_simulation).to.not.be.empty;
+  console.log(`✅ Campo id_simulation presente: ${response.body.id_simulation}`);
 });
 
-Then('la respuesta debería contener el campo installments', function () {
+Then('la respuesta debería contener el campo selected_account', function () {
   const response = this.getResponse();
-  expect(response.body).to.have.property('installments');
-  expect(response.body.installments).to.be.a('number');
-  console.log(`✅ Campo installments presente: ${response.body.installments}`);
+  expect(response.body).to.have.property('selected_account');
+  expect(response.body.selected_account).to.be.a('string');
+  expect(response.body.selected_account).to.not.be.empty;
+  console.log(`✅ Campo selected_account presente: ${response.body.selected_account}`);
 });
 
-Then('la respuesta debería contener el campo interest_rate', function () {
+Then('la respuesta debería contener el campo cft', function () {
   const response = this.getResponse();
-  expect(response.body).to.have.property('interest_rate');
-  expect(response.body.interest_rate).to.be.a('number');
-  console.log(`✅ Campo interest_rate presente: ${response.body.interest_rate}`);
+  expect(response.body).to.have.property('cft');
+  expect(response.body.cft).to.be.a('number');
+  expect(response.body.cft).to.be.greaterThan(0);
+  console.log(`✅ Campo cft presente: ${response.body.cft}%`);
+});
+
+Then('la respuesta debería contener el campo tna', function () {
+  const response = this.getResponse();
+  expect(response.body).to.have.property('tna');
+  expect(response.body.tna).to.be.a('number');
+  expect(response.body.tna).to.be.greaterThan(0);
+  console.log(`✅ Campo tna presente: ${response.body.tna}%`);
+});
+
+Then('la respuesta debería contener el campo tea', function () {
+  const response = this.getResponse();
+  expect(response.body).to.have.property('tea');
+  expect(response.body.tea).to.be.a('number');
+  expect(response.body.tea).to.be.greaterThan(0);
+  console.log(`✅ Campo tea presente: ${response.body.tea}%`);
+});
+
+Then('la respuesta debería contener el campo credit_net_amount', function () {
+  const response = this.getResponse();
+  expect(response.body).to.have.property('credit_net_amount');
+  expect(response.body.credit_net_amount).to.be.a('number');
+  expect(response.body.credit_net_amount).to.be.greaterThan(0);
+  console.log(`✅ Campo credit_net_amount presente: $${response.body.credit_net_amount}`);
 });
 
 Then('la respuesta debería contener el campo total_amount', function () {
   const response = this.getResponse();
   expect(response.body).to.have.property('total_amount');
   expect(response.body.total_amount).to.be.a('number');
-  console.log(`✅ Campo total_amount presente: ${response.body.total_amount}`);
+  expect(response.body.total_amount).to.be.greaterThan(0);
+  console.log(`✅ Campo total_amount presente: $${response.body.total_amount}`);
+});
+
+Then('la respuesta debería contener el campo installments_details', function () {
+  const response = this.getResponse();
+  expect(response.body).to.have.property('installments_details');
+  expect(response.body.installments_details).to.be.an('array');
+  expect(response.body.installments_details).to.not.be.empty;
+  console.log(`✅ Campo installments_details presente con ${response.body.installments_details.length} cuota(s)`);
 });
 
 // Pasos de código de estado y rendimiento (reutilizados desde auth_steps.js)
