@@ -30,6 +30,16 @@ module.exports = {
     publishQuiet: true
   },
   
+  staging: {
+    require: [
+      'tests/features/support/**/*.js',
+      'tests/features/step_definitions/**/*.js'
+    ],
+    format: ['progress-bar'],
+    publishQuiet: true,
+    timeout: 30000
+  },
+  
   ci: {
     require: [
       'tests/features/support/**/*.js',

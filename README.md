@@ -1,29 +1,42 @@
 # QA Pactum Contratos
 
-Repositorio de pruebas de automatización QA con Pactum.js nativo.
+Repositorio de pruebas de automatización QA con Pactum.js nativo y BDD con Cucumber.
 
 ## 🚀 Características
 
 - **Pactum.js nativo** - Framework de testing API simple y potente
-- **Mocha** - Test runner robusto
+- **Cucumber.js + Gherkin** - Tests BDD en español latino
+- **Mocha** - Test runner robusto para tests unitarios
 - **Chai** - Librería de aserciones
 - **NYC** - Cobertura de código
 - **Estructura organizada** - Tests separados por funcionalidad
+- **Configuración por ambientes** - Development, staging, production
+- **Flujos secuenciales** - Autenticación + funcionalidad
 
 ## 📁 Estructura del Proyecto
 
 ```
 ├── tests/
-│   ├── features/       # Tests BDD con Cucumber/Gherkin
-│   │   ├── auth/       # Features de autenticación
-│   │   ├── api/        # Features de APIs
+│   ├── features/              # Tests BDD con Cucumber/Gherkin
+│   │   ├── auth/              # Features de autenticación
+│   │   │   └── authentication.feature
+│   │   ├── api/               # Features de APIs
+│   │   │   ├── contracts.feature
+│   │   │   └── comafi-eligibility.feature
 │   │   ├── step_definitions/  # Definiciones de pasos
-│   │   └── support/    # Configuración y helpers
-│   ├── api/            # Tests unitarios con Mocha
-│   ├── smoke/          # Tests de humo
-│   └── utils/          # Utilidades y helpers
-├── reports/            # Reportes de pruebas
-└── package.json      # Configuración del proyecto
+│   │   │   ├── auth_steps.js
+│   │   │   ├── api_steps.js
+│   │   │   └── eligibility_steps.js
+│   │   └── support/           # Configuración y helpers
+│   │       ├── hooks.js
+│   │       ├── world.js
+│   │       └── config.js
+│   ├── api/                   # Tests unitarios con Mocha
+│   ├── smoke/                 # Tests de humo
+│   └── utils/                 # Utilidades y helpers
+├── reports/                   # Reportes de pruebas
+├── cucumber.js               # Configuración de Cucumber
+└── package.json             # Configuración del proyecto
 ```
 
 ## 🛠️ Instalación
@@ -103,6 +116,36 @@ npm run test:report
 npm run test:watch
 ```
 
+## 🌍 Configuración por Ambientes
+
+### Ambientes Disponibles
+- **development** (default): `https://nera-qa.comafi.com.ar`
+- **staging**: `https://nera-staging.comafi.com.ar`
+- **production**: `https://nera.comafi.com.ar`
+
+### Variables de Entorno
+```bash
+# Configurar ambiente
+NODE_ENV=development  # o staging, production
+
+# Para producción (credenciales desde variables de entorno)
+CLIENT_ID=your_client_id
+CLIENT_SECRET=your_client_secret
+AUTH_HEADER=your_auth_header
+```
+
+### Ejecutar por Ambiente
+```bash
+# Development (default)
+npx cucumber-js tests/features/ --profile development
+
+# Staging
+NODE_ENV=staging npx cucumber-js tests/features/ --profile staging
+
+# Production
+NODE_ENV=production npx cucumber-js tests/features/ --profile production
+```
+
 ## 📋 Tests Disponibles
 
 ### 🔐 Autenticación OAuth2 (BDD)
@@ -134,6 +177,37 @@ npm run test:watch
 - **Casos positivos y negativos** con diferentes CUITs
 - **Validación de estructura** completa de respuesta JSON
 
+## 🏷️ Etiquetas Disponibles
+
+### Etiquetas por Funcionalidad
+- `@smoke`: Tests críticos de humo
+- `@auth`: Tests de autenticación
+- `@contracts`: Tests de contratos
+- `@eligibility`: Tests de elegibilidad
+- `@negative`: Tests de casos negativos
+- `@performance`: Tests de rendimiento
+- `@token-validation`: Tests de validación de tokens
+
+### Etiquetas de Flujo Secuencial
+- `@auth-token`: Ejecuta solo el escenario que obtiene el token
+- `@eligibility-flow`: Ejecuta el flujo de elegibilidad
+- `@auth-to-eligibility`: Ejecuta autenticación + elegibilidad en secuencia
+
+### Comandos por Etiquetas
+```bash
+# Flujos secuenciales (autenticación + funcionalidad)
+npx cucumber-js tests/features/ --tags "@auth-token"
+npx cucumber-js tests/features/ --tags "@eligibility-flow"
+npm run test:cucumber:auth-to-eligibility
+
+# Combinar etiquetas
+npx cucumber-js tests/features/ --tags "@auth and @smoke"
+npx cucumber-js tests/features/ --tags "@eligibility and @smoke"
+
+# Excluir tests negativos
+npx cucumber-js tests/features/ --tags "not @negative"
+```
+
 ### 🌐 APIs Demo (Unitarios)
 - CRUD completo con JSONPlaceholder
 - Validaciones de estructura
@@ -148,14 +222,35 @@ npm run test:watch
 ## 🔧 Configuración
 
 ### Credenciales OAuth2
-Las credenciales están configuradas en `tests/utils/config.js`:
+Las credenciales están configuradas en `tests/features/support/config.js`:
 
 ```javascript
-credentials: {
+// Development/Staging
+auth: {
   clientId: '5872d210',
   clientSecret: 'b18338211e2f6527ec04ead2c556252',
-  authHeader: 'Basic NTg3MmQyMTA6YjE4MzM4MjExZTJmNjUyN2VjMDRlYWQyYzU1NjI1Mg=='
+  authHeader: 'Basic NTg3MmQyMTA6YjE4MzM4MjExZTJmNjUyN2VjMDRlYWQyYzU1NjI1Mg==',
+  tokenEndpoint: '/auth/realms/hbe-sso/protocol/openid-connect/token'
 }
+
+// Production (desde variables de entorno)
+auth: {
+  clientId: process.env.CLIENT_ID,
+  clientSecret: process.env.CLIENT_SECRET,
+  authHeader: process.env.AUTH_HEADER,
+  tokenEndpoint: '/auth/realms/hbe-sso/protocol/openid-connect/token'
+}
+```
+
+### Configuración de Cucumber
+```javascript
+// cucumber.js
+module.exports = {
+  default: { /* configuración base */ },
+  development: { /* desarrollo */ },
+  staging: { /* staging */ },
+  ci: { /* CI/CD */ }
+};
 ```
 
 ### Timeouts
@@ -169,9 +264,16 @@ timeouts: {
 
 ## 📊 Reportes
 
-Los reportes se generan en la carpeta `reports/`:
+Los reportes se generan automáticamente en la carpeta `reports/`:
+
+### Tests Unitarios (Mocha)
 - `test-results.json` - Resultados en formato JSON
 - Cobertura de código con NYC
+
+### Tests BDD (Cucumber)
+- `cucumber-report.json` - Resultados en formato JSON
+- `cucumber-report.html` - Reporte visual HTML
+- Reportes por ambiente (development, staging, production)
 
 ## 🚀 Ejemplos de Uso
 
@@ -279,12 +381,33 @@ Feature: API de Autenticación
     Given el servicio de autenticación está disponible
     And tengo credenciales de cliente válidas
 
-  @smoke @auth
+  @smoke @auth @auth-token
   Scenario: Obtener exitosamente token de acceso con credenciales de cliente
     When envío una petición POST al endpoint de autenticación
     Then debería recibir un código de estado 200
     And la respuesta debería contener un token de acceso válido
     And debería guardar el token de acceso para uso futuro
+```
+
+### Test de Elegibilidad Comafi (BDD)
+```gherkin
+Feature: API de Elegibilidad Comafi
+  Como usuario del sistema
+  Quiero consultar la elegibilidad de préstamos
+  Para poder determinar si un CUIT es apto para una oferta crediticia
+
+  Background:
+    Given tengo un token de acceso válido
+    And el servicio de elegibilidad está disponible
+
+  @smoke @eligibility @eligibility-flow
+  Scenario: Consultar elegibilidad con CUIT válido
+    Given tengo datos de elegibilidad válidos
+    When envío una petición POST a "/api/v1/products/loans/eligibility"
+    Then debería recibir un código de estado 200
+    And la respuesta debería contener elegibilidad aprobada
+    And la respuesta debería contener is_eligible como true
+    And la respuesta debería contener un mensaje amigable
 ```
 
 ### Test de Contratos (BDD)
@@ -310,10 +433,13 @@ Feature: API de Contratos
 - **Tests BDD en español latino** - Todos los features están traducidos
 - **Estructura limpia** - Sin redundancia en step definitions
 - **Configuración por perfiles** - Development, staging, production
+- **Flujos secuenciales** - Autenticación + funcionalidad con persistencia de token
 - **Tests de OAuth2** pueden fallar si las credenciales están expiradas
 - **Tests de demo** usan JSONPlaceholder que siempre funciona
 - **Smoke tests** verifican conectividad básica
 - **Step definitions** organizados por funcionalidad
+- **Token persistence** - Tokens se comparten entre ejecuciones de Cucumber
+- **Ambientes configurados** - URLs dinámicas según el ambiente
 
 ## 🤝 Contribución
 

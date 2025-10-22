@@ -31,6 +31,7 @@ Given('tengo un token de acceso válido', async function () {
     'Content-Type': 'application/json'
   });
   console.log('🔑 Token de acceso válido configurado');
+  console.log(`🔍 Token (primeros 50 chars): ${accessToken.substring(0, 50)}...`);
 });
 
 Given('el servicio de contratos está disponible', async function () {
@@ -82,11 +83,17 @@ When('envío una petición GET a {string}', async function (endpoint) {
 
 When('envío una petición POST a {string}', async function (endpoint) {
   const requestData = this.context.requestData;
+  
+  // Debug: mostrar headers y datos
+  console.log('🔍 Headers configurados:', JSON.stringify(this.context.headers, null, 2));
+  console.log('🔍 Datos de la petición:', JSON.stringify(requestData.contract || requestData, null, 2));
+  
   const response = await this.makeRequest('POST', endpoint, {
     json: requestData.contract || requestData
   });
   this.setResponse(response);
   console.log(`📤 Solicitud POST enviada a ${endpoint}`);
+  console.log(`📊 Status code recibido: ${response.statusCode}`);
 });
 
 When('envío una petición PUT a {string}', async function (endpoint) {

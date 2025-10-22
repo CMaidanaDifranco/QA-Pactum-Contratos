@@ -1,9 +1,10 @@
 const { Given, When, Then } = require('cucumber');
 const { expect } = require('chai');
+const config = require('../support/config');
 
 // Pasos de configuración para elegibilidad
 Given('el servicio de elegibilidad está disponible', async function () {
-  this.setBaseUrl('https://nera-qa.comafi.com.ar');
+  this.setBaseUrl(config.baseUrl);
   console.log('📋 Servicio de elegibilidad disponible');
 });
 
@@ -16,12 +17,13 @@ Given('tengo datos de elegibilidad válidos', async function () {
     }
   });
   
-  // Headers específicos para elegibilidad
+  // Headers específicos para elegibilidad (sin sobrescribir Authorization)
   this.setHeaders({
     'trace-id': '58045aa1-a187-4104-a96f-2741fd3a55ad',
     'operation-document-type': 'CUIT',
     'operation-document-number': '30694416159',
-    'Content-Type': 'application/json'
+    'Cookie': '4ea47a54ebc11dec0d7f9f38a0dbd17b=a9c1b665b0c86819498e02c827174816; 99b47315582a09f5cfd4f2a7c0ac7a2f=1eb1ed87a6bfcdf28757e5e6c05788cd; c293250d08af1e295f35ccff9a73f7a6=1ff2794b3c02cac96dcdc3066d1ac1a7'
+    // No incluir Content-Type aquí para no sobrescribir el del token
   });
   
   console.log('📄 Datos de elegibilidad válidos preparados');
