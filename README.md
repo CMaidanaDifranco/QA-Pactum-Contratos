@@ -20,7 +20,7 @@ Repositorio de pruebas de automatización QA con Pactum.js nativo y BDD con Cucu
 │   ├── features/              # Tests BDD con Cucumber/Gherkin
 │   │   ├── auth/              # Features de autenticación
 │   │   │   └── comafi-authentication.feature
-│   │   ├── api/               # Features de APIs
+│   │   ├── api/               # Features de APIs Comafi
 │   │   │   ├── comafi-eligibility.feature
 │   │   │   └── comafi-simulacion.feature
 │   │   ├── step_definitions/  # Definiciones de pasos
@@ -32,10 +32,10 @@ Repositorio de pruebas de automatización QA con Pactum.js nativo y BDD con Cucu
 │   │       ├── hooks.js
 │   │       ├── world.js
 │   │       └── config.js
-│   ├── api/                   # Tests unitarios con Mocha
-│   ├── smoke/                 # Tests de humo
-│   └── utils/                 # Utilidades y helpers
+│   └── temp_token.txt         # Token temporal para flujos secuenciales
 ├── reports/                   # Reportes de pruebas
+│   ├── cucumber-report.json   # Reporte JSON
+│   └── cucumber-report.html   # Reporte HTML
 ├── cucumber.js               # Configuración de Cucumber
 └── package.json             # Configuración del proyecto
 ```
@@ -87,37 +87,22 @@ npm run test:cucumber:auth-to-simulation
 npx cucumber-js tests/features/ --dry-run
 ```
 
-### Tests Unitarios con Mocha
+### Scripts NPM Disponibles
 ```bash
-# Todos los tests unitarios
-npm test
+# Tests BDD con Cucumber
+npm run test:cucumber                    # Todos los features
+npm run test:cucumber:auth              # Solo autenticación
+npm run test:cucumber:api                # Solo APIs
+npm run test:cucumber:smoke              # Solo smoke tests
+npm run test:cucumber:dev                # Perfil development
+npm run test:cucumber:ci                 # Perfil CI/CD
 
-# Tests específicos
-npm test tests/api/auth_token.test.js
-npm test tests/example/working.test.js
-```
-
-### Tests específicos
-```bash
-# Tests de autenticación
-npm run test:auth
-
-# Tests de API
-npm run test:api
-
-# Tests de humo
-npm run test:smoke
-
-# Con cobertura
-npm run test:coverage
-
-# Con reporte
-npm run test:report
-```
-
-### Modo watch
-```bash
-npm run test:watch
+# Flujos secuenciales
+npm run test:cucumber:auth-token         # Solo obtener token
+npm run test:cucumber:eligibility-flow   # Flujo de elegibilidad
+npm run test:cucumber:simulation-flow    # Flujo de simulación
+npm run test:cucumber:auth-to-eligibility # Auth + elegibilidad
+npm run test:cucumber:auth-to-simulation  # Auth + simulación
 ```
 
 ## 🌍 Configuración por Ambientes
@@ -217,16 +202,12 @@ npx cucumber-js tests/features/ --tags "@eligibility and @smoke"
 npx cucumber-js tests/features/ --tags "not @negative"
 ```
 
-### 🌐 APIs Demo (Unitarios)
-- CRUD completo con JSONPlaceholder
-- Validaciones de estructura
-- Headers y content-type
-- Tiempo de respuesta
-
-### 💨 Smoke Tests
-- Conectividad básica
-- Validaciones de headers
-- Tiempo de respuesta
+### 🔧 Características Técnicas
+- **Timeout extendido** - 10 segundos para endpoints de simulación/elegibilidad
+- **Token persistence** - Reutilización de tokens entre ejecuciones
+- **Reportes HTML/JSON** - Análisis detallado de resultados
+- **Configuración por ambientes** - Development, staging, production
+- **Flujos secuenciales** - Autenticación + funcionalidad
 
 ## 🔧 Configuración
 
@@ -275,14 +256,11 @@ timeouts: {
 
 Los reportes se generan automáticamente en la carpeta `reports/`:
 
-### Tests Unitarios (Mocha)
-- `test-results.json` - Resultados en formato JSON
-- Cobertura de código con NYC
-
 ### Tests BDD (Cucumber)
-- `cucumber-report.json` - Resultados en formato JSON
-- `cucumber-report.html` - Reporte visual HTML
-- Reportes por ambiente (development, staging, production)
+- **`cucumber-report.json`** - Resultados estructurados en JSON
+- **`cucumber-report.html`** - Reporte visual interactivo
+- **Configuración automática** - Se generan con cada ejecución
+- **Análisis detallado** - Por feature, escenario y paso
 
 ## 🚀 Ejemplos de Uso
 
@@ -419,31 +397,37 @@ Feature: API de Elegibilidad Comafi
     And la respuesta debería contener un mensaje amigable
 ```
 
-### Test de Contratos (BDD)
+### Test de Simulación Comafi (BDD)
 ```gherkin
-Feature: API de Contratos
+Feature: API de Simulación Comafi
   Como usuario del sistema
-  Quiero gestionar contratos
-  Para poder realizar operaciones de contratos
+  Quiero simular un préstamo
+  Para poder calcular las condiciones y montos de financiamiento
 
   Background:
     Given tengo un token de acceso válido
-    And el servicio de contratos está disponible
+    And el servicio de simulación está disponible
 
+  @smoke @simulation @simulation-flow
+  Scenario: Simular préstamo con datos válidos
+    Given tengo datos de simulación válidos
+    When envío una petición POST a "/api/v1/products/loans/simulation"
+    Then debería recibir un código de estado 200
+    And la respuesta debería contener datos de simulación válidos
 ```
 
 ## 📝 Notas
 
 - **Tests BDD en español latino** - Todos los features están traducidos
-- **Estructura limpia** - Sin redundancia en step definitions
-- **Configuración por perfiles** - Development, staging, production
+- **Arquitectura BDD pura** - Solo Cucumber/Gherkin, sin tests unitarios
+- **Enfoque en APIs Comafi** - Autenticación, elegibilidad y simulación
 - **Flujos secuenciales** - Autenticación + funcionalidad con persistencia de token
-- **Tests de OAuth2** pueden fallar si las credenciales están expiradas
-- **Tests de demo** usan JSONPlaceholder que siempre funciona
-- **Smoke tests** verifican conectividad básica
-- **Step definitions** organizados por funcionalidad
-- **Token persistence** - Tokens se comparten entre ejecuciones de Cucumber
-- **Ambientes configurados** - URLs dinámicas según el ambiente
+- **Timeout optimizado** - 10 segundos para endpoints complejos
+- **Reportes automáticos** - HTML y JSON en cada ejecución
+- **Token persistence** - Reutilización entre ejecuciones via `temp_token.txt`
+- **Configuración por ambientes** - Development, staging, production
+- **Step definitions organizados** - Por funcionalidad (auth, api, eligibility, simulation)
+- **Estructura limpia** - Sin archivos obsoletos o no utilizados
 
 ## 🤝 Contribución
 
