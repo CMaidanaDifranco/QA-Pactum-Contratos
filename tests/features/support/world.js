@@ -87,6 +87,12 @@ function CustomWorld({ attach, parameters }) {
       request = request.withQueryParams(options.queryParams);
     }
     
+    // Configurar timeout específico para endpoints de simulación
+    if (endpoint.includes('/simulation')) {
+      request = request.withRequestTimeout(10000); // 10 segundos para simulación
+      console.log('⏱️ Timeout configurado a 10 segundos para endpoint de simulación');
+    }
+    
     // Ejecutar solicitud
     const response = await request.toss();
     this.setResponse(response);

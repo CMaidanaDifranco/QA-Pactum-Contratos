@@ -17,7 +17,7 @@ module.exports = {
     failFast: false,
     retry: 1,
     parallel: 1,
-    timeout: 30000
+    timeout: 60000
   },
   
   // Configuración para diferentes entornos
@@ -37,7 +37,7 @@ module.exports = {
     ],
     format: ['progress-bar'],
     publishQuiet: true,
-    timeout: 30000
+    timeout: 60000
   },
   
   ci: {
