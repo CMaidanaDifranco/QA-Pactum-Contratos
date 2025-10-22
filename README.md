@@ -54,10 +54,12 @@ npx cucumber-js tests/features/api/contracts.feature
 npx cucumber-js tests/features/ --tags "@smoke"
 npx cucumber-js tests/features/ --tags "@auth"
 npx cucumber-js tests/features/ --tags "@contracts"
+npx cucumber-js tests/features/ --tags "@eligibility"
 
 # Combinar tags
 npx cucumber-js tests/features/ --tags "@auth and @smoke"
 npx cucumber-js tests/features/ --tags "@auth or @contracts"
+npx cucumber-js tests/features/ --tags "@eligibility and @smoke"
 
 # Modo dry-run (sin ejecutar)
 npx cucumber-js tests/features/ --dry-run
@@ -118,6 +120,14 @@ npm run test:watch
 - **Autenticación requerida** para todas las operaciones
 - **Validaciones de respuesta** y códigos de estado
 - **Datos de prueba** predefinidos
+
+### 🏦 Elegibilidad Comafi (BDD)
+**Feature:** `tests/features/api/comafi-eligibility.feature`
+- **Consulta de elegibilidad** de préstamos
+- **Autenticación requerida** con token Bearer
+- **Validación de CUIT** y datos de elegibilidad
+- **Casos positivos y negativos** con diferentes CUITs
+- **Validación de estructura** completa de respuesta JSON
 
 ### 🌐 APIs Demo (Unitarios)
 - CRUD completo con JSONPlaceholder
