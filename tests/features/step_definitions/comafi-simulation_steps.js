@@ -2,7 +2,7 @@ const { Given, When, Then } = require('cucumber');
 const { expect } = require('chai');
 const config = require('../support/config');
 
-// Pasos de configuración para simulación
+// Pasos de configuración para simulación Comafi
 Given('el servicio de simulación está disponible', async function () {
   this.setBaseUrl(config.baseUrl);
   console.log('📊 Servicio de simulación disponible');
@@ -25,7 +25,7 @@ Given('tengo datos de simulación válidos', async function () {
   
   // Headers específicos para simulación (sin sobrescribir Authorization)
   this.setHeaders({
-    'User-Agent': 'PostmanRuntime/7.49.0',
+    'User-Agent': 'QA-PActum-Autionation/1.0',
     'Accept': '*/*',
     'Accept-Encoding': 'gzip, deflate, br',
     'Connection': 'keep-alive',
@@ -55,7 +55,7 @@ Given('tengo datos de simulación inválidos', async function () {
   });
   
   this.setHeaders({
-    'User-Agent': 'PostmanRuntime/7.49.0',
+    'User-Agent': 'QA-PActum-Autionation/1.0',
     'Accept': '*/*',
     'Accept-Encoding': 'gzip, deflate, br',
     'Connection': 'keep-alive',
@@ -171,7 +171,8 @@ Then('la respuesta debería contener el campo installments_details', function ()
   console.log(`✅ Campo installments_details presente con ${response.body.installments_details.length} cuota(s)`);
 });
 
-// Pasos de código de estado y rendimiento (reutilizados desde auth_steps.js)
-// Nota: Estos pasos están definidos en auth_steps.js para evitar duplicación
-// Paso de mensaje de error (reutilizado desde auth_steps.js)
-// Nota: Este paso está definido en auth_steps.js para evitar duplicación
+// Pasos de código de estado y rendimiento (reutilizados desde comafi-auth_steps.js)
+// Nota: Estos pasos están definidos en comafi-auth_steps.js para evitar duplicación
+// Paso de mensaje de error (reutilizado desde comafi-auth_steps.js)
+// Nota: Este paso está definido en comafi-auth_steps.js para evitar duplicación
+

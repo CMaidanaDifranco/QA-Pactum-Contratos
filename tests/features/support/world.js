@@ -88,9 +88,13 @@ function CustomWorld({ attach, parameters }) {
     }
     
     // Configurar timeout específico para endpoints de simulación y elegibilidad
-    if (endpoint.includes('/simulation') || endpoint.includes('/eligibility')) {
-      request = request.withRequestTimeout(10000); // 10 segundos para simulación y elegibilidad
-      console.log('⏱️ Timeout configurado a 10 segundos para endpoint de simulación/elegibilidad');
+    const endpointLower = endpoint.toLowerCase();
+    if (endpointLower.includes('/simulation') || 
+        endpointLower.includes('/eligibility') || 
+        endpointLower.includes('/elegibilidad') ||
+        endpointLower.includes('prestamo/elegibilidad')) {
+      request = request.withRequestTimeout(30000); // 30 segundos para simulación y elegibilidad
+      console.log(`⏱️ Timeout configurado a 30 segundos para endpoint de simulación/elegibilidad: ${endpoint}`);
     }
     
     // Ejecutar solicitud

@@ -20,14 +20,16 @@ Repositorio de pruebas de automatización QA con Pactum.js nativo y BDD con Cucu
 │   ├── features/              # Tests BDD con Cucumber/Gherkin
 │   │   ├── auth/              # Features de autenticación
 │   │   │   └── comafi-authentication.feature
-│   │   ├── api/               # Features de APIs Comafi
+│   │   ├── api/               # Features de APIs
 │   │   │   ├── comafi-eligibility.feature
-│   │   │   └── comafi-simulacion.feature
+│   │   │   ├── comafi-simulacion.feature
+│   │   │   └── galicia-eligibility.feature
 │   │   ├── step_definitions/  # Definiciones de pasos
-│   │   │   ├── auth_steps.js
+│   │   │   ├── comafi-auth_steps.js
 │   │   │   ├── api_steps.js
-│   │   │   ├── eligibility_steps.js
-│   │   │   └── simulation_steps.js
+│   │   │   ├── comafi-eligibility_steps.js
+│   │   │   ├── comafi-simulation_steps.js
+│   │   │   └── galicia_eligibility_steps.js
 │   │   └── support/           # Configuración y helpers
 │   │       ├── hooks.js
 │   │       ├── world.js
@@ -64,17 +66,20 @@ npx cucumber-js tests/features/ --profile development
 npx cucumber-js tests/features/auth/comafi-authentication.feature
 npx cucumber-js tests/features/api/comafi-eligibility.feature
 npx cucumber-js tests/features/api/comafi-simulacion.feature
+npx cucumber-js tests/features/api/galicia-eligibility.feature
 
 # Ejecutar por tags (IMPORTANTE: incluir la ruta)
 npx cucumber-js tests/features/ --tags "@smoke"
 npx cucumber-js tests/features/ --tags "@auth"
 npx cucumber-js tests/features/ --tags "@eligibility"
 npx cucumber-js tests/features/ --tags "@simulation"
+npx cucumber-js tests/features/ --tags "@galicia"
 
 # Combinar tags
 npx cucumber-js tests/features/ --tags "@auth and @smoke"
 npx cucumber-js tests/features/ --tags "@eligibility and @smoke"
 npx cucumber-js tests/features/ --tags "@simulation and @smoke"
+npx cucumber-js tests/features/ --tags "@galicia and @smoke"
 
 # Flujos secuenciales (autenticación + funcionalidad)
 npx cucumber-js tests/features/ --tags "@auth-token"
@@ -169,6 +174,16 @@ NODE_ENV=production npx cucumber-js tests/features/ --profile production
 - **Cálculo de condiciones** de financiamiento
 - **Validación de estructura** completa de respuesta JSON
 
+### 🏦 Elegibilidad Galicia (BDD)
+**Feature:** `tests/features/api/galicia-eligibility.feature`
+- **Consulta de elegibilidad** de préstamos en Galicia
+- **Autenticación con app_id y app_key** (sin token Bearer)
+- **Validación de CUIT** y datos de elegibilidad
+- **Casos positivos y negativos** con diferentes CUITs
+- **Validación de estructura** completa de respuesta JSON
+- **Validación de ofertas** con estructura detallada
+- **Manejo de errores** (400, 500, 503, 504)
+
 ## 🏷️ Etiquetas Disponibles
 
 ### Etiquetas por Funcionalidad
@@ -176,9 +191,12 @@ NODE_ENV=production npx cucumber-js tests/features/ --profile production
 - `@auth`: Tests de autenticación
 - `@eligibility`: Tests de elegibilidad
 - `@simulation`: Tests de simulación
+- `@galicia`: Tests de APIs Galicia
 - `@negative`: Tests de casos negativos
 - `@performance`: Tests de rendimiento
 - `@token-validation`: Tests de validación de tokens
+- `@validation`: Tests de validación de estructura
+- `@error`: Tests de manejo de errores
 
 ### Etiquetas de Flujo Secuencial
 - `@auth-token`: Ejecuta solo el escenario que obtiene el token
@@ -197,9 +215,12 @@ npm run test:cucumber:auth-to-eligibility
 # Combinar etiquetas
 npx cucumber-js tests/features/ --tags "@auth and @smoke"
 npx cucumber-js tests/features/ --tags "@eligibility and @smoke"
+npx cucumber-js tests/features/ --tags "@galicia and @smoke"
+npx cucumber-js tests/features/ --tags "@galicia and @validation"
 
 # Excluir tests negativos
 npx cucumber-js tests/features/ --tags "not @negative"
+npx cucumber-js tests/features/ --tags "not @error"
 ```
 
 ### 🔧 Características Técnicas
@@ -416,17 +437,37 @@ Feature: API de Simulación Comafi
     And la respuesta debería contener datos de simulación válidos
 ```
 
+### Test de Elegibilidad Galicia (BDD)
+```gherkin
+Feature: API de Elegibilidad Galicia
+  Como usuario del sistema
+  Quiero consultar la elegibilidad de préstamos en Galicia
+  Para poder determinar si un CUIT es apto para una oferta crediticia
+
+  Background:
+    Given el servicio de elegibilidad Galicia está disponible
+
+  @smoke @galicia @eligibility @eligibility-flow
+  Scenario: Consultar elegibilidad con CUIT válido
+    Given tengo datos de elegibilidad Galicia válidos
+    When envío una petición POST a "/galicia/v1/agfi/gateway-nera/prestamo/elegibilidad"
+    Then debería recibir un código de estado 200
+    And la respuesta debería contener el campo data
+    And la respuesta debería contener numeroTransaccion
+    And la respuesta debería contener ofertas
+```
+
 ## 📝 Notas
 
 - **Tests BDD en español latino** - Todos los features están traducidos
 - **Arquitectura BDD pura** - Solo Cucumber/Gherkin, sin tests unitarios
-- **Enfoque en APIs Comafi** - Autenticación, elegibilidad y simulación
+- **Enfoque en APIs Comafi y Galicia** - Autenticación, elegibilidad y simulación
 - **Flujos secuenciales** - Autenticación + funcionalidad con persistencia de token
 - **Timeout optimizado** - 10 segundos para endpoints complejos
 - **Reportes automáticos** - HTML y JSON en cada ejecución
 - **Token persistence** - Reutilización entre ejecuciones via `temp_token.txt`
 - **Configuración por ambientes** - Development, staging, production
-- **Step definitions organizados** - Por funcionalidad (auth, api, eligibility, simulation)
+- **Step definitions organizados** - Por funcionalidad (auth, api, eligibility, simulation, galicia)
 - **Estructura limpia** - Sin archivos obsoletos o no utilizados
 
 ## 🤝 Contribución

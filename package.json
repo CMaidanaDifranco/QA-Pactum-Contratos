@@ -21,7 +21,9 @@
     "test:cucumber:eligibility-flow": "cucumber-js tests/features/ --tags @eligibility-flow --config cucumber.js",
     "test:cucumber:simulation-flow": "cucumber-js tests/features/ --tags @simulation-flow --config cucumber.js",
     "test:cucumber:auth-to-eligibility": "cucumber-js tests/features/ --tags @auth-token --config cucumber.js && cucumber-js tests/features/ --tags @eligibility-flow --config cucumber.js",
-    "test:cucumber:auth-to-simulation": "cucumber-js tests/features/ --tags @auth-token --config cucumber.js && cucumber-js tests/features/ --tags @simulation-flow --config cucumber.js"
+    "test:cucumber:auth-to-simulation": "cucumber-js tests/features/ --tags @auth-token --config cucumber.js && cucumber-js tests/features/ --tags @simulation-flow --config cucumber.js",
+    "report:html": "node generate-html-report.js",
+    "test:cucumber:with-report": "cucumber-js --config cucumber.js && npm run report:html"
   },
   "keywords": [
     "qa",
@@ -36,6 +38,7 @@
     "@cucumber/html-formatter": "^22.0.0",
     "chai": "^4.3.7",
     "cucumber": "^6.0.7",
+    "cucumber-html-reporter": "^7.2.0",
     "mocha": "^10.2.0",
     "nyc": "^15.1.0",
     "pactum": "^3.2.2"

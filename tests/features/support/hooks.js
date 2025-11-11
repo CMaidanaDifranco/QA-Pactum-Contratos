@@ -1,5 +1,8 @@
-const { Before, After, BeforeAll, AfterAll } = require('cucumber');
+const { Before, After, BeforeAll, AfterAll, setDefaultTimeout } = require('cucumber');
 const { spec } = require('pactum');
+
+// Configurar timeout por defecto para todos los steps (60 segundos)
+setDefaultTimeout(60 * 1000);
 
 // Variables globales
 let accessToken = null;

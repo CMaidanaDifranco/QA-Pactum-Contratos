@@ -138,5 +138,5 @@ Then('la respuesta debería contener el contrato actualizado', function () {
   console.log('✅ Contrato actualizado recibido');
 });
 
-// Pasos de código de estado (reutilizados desde auth_steps.js)
-// Nota: Este paso está definido en auth_steps.js para evitar duplicación
+// Pasos de código de estado (reutilizados desde comafi-auth_steps.js)
+// Nota: Este paso está definido en comafi-auth_steps.js para evitar duplicación

@@ -2,7 +2,7 @@ const { Given, When, Then } = require('cucumber');
 const { expect } = require('chai');
 const config = require('../support/config');
 
-// Pasos de autenticación
+// Pasos de autenticación Comafi
 Given('el servicio de autenticación está disponible', async function () {
   this.setBaseUrl(config.baseUrl);
   console.log('🔐 Servicio de autenticación disponible');
@@ -10,7 +10,7 @@ Given('el servicio de autenticación está disponible', async function () {
 
 Given('tengo credenciales de cliente válidas', async function () {
   this.setHeaders({
-    'User-Agent': 'NeraApis',
+    'User-Agent': 'QA-PActum-Autionation/1.0',
     'Content-Type': 'application/x-www-form-urlencoded',
     'Authorization': config.auth.authHeader,
     'Cookie': '4ea47a54ebc11dec0d7f9f38a0dbd17b=3651fc6cc67025843ea6ed311404872c; 99b47315582a09f5cfd4f2a7c0ac7a2f=1eb1ed87a6bfcdf28757e5e6c05788cd'
@@ -23,7 +23,7 @@ Given('tengo credenciales de cliente válidas', async function () {
 
 Given('tengo credenciales de cliente inválidas', async function () {
   this.setHeaders({
-    'User-Agent': 'NeraApis',
+    'User-Agent': 'QA-PActum-Autionation/1.0',
     'Content-Type': 'application/x-www-form-urlencoded',
     'Authorization': 'Basic invalid_credentials',
     'Cookie': 'invalid_cookie'
@@ -115,3 +115,4 @@ Then('el tiempo de respuesta debería ser menor a {int} segundos', function (max
   expect(responseTime).to.be.lessThan(maxSeconds * 1000);
   console.log(`⏱️ Tiempo de respuesta: ${responseTime}ms (máximo: ${maxSeconds}s)`);
 });
+
