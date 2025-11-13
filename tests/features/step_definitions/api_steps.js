@@ -1,4 +1,4 @@
-const { Given, When, Then } = require('cucumber');
+const { Given, When, Then } = require('@cucumber/cucumber');
 const { expect } = require('chai');
 
 // Pasos comunes de API
@@ -84,8 +84,16 @@ When('envío una petición GET a {string}', async function (endpoint) {
 When('envío una petición POST a {string}', async function (endpoint) {
   const requestData = this.context.requestData;
   
-  // Debug: mostrar headers y datos
-  console.log('🔍 Headers configurados:', JSON.stringify(this.context.headers, null, 2));
+  // Debug: mostrar headers y datos (mostrar solo claves únicas para evitar confusión)
+  const headersForLog = {};
+  for (const [key, value] of Object.entries(this.context.headers)) {
+    if (key === 'Authorization') {
+      headersForLog[key] = value.substring(0, 50) + '...';
+    } else {
+      headersForLog[key] = value;
+    }
+  }
+  console.log('🔍 Headers configurados:', JSON.stringify(headersForLog, null, 2));
   console.log('🔍 Datos de la petición:', JSON.stringify(requestData.contract || requestData, null, 2));
   
   const response = await this.makeRequest('POST', endpoint, {

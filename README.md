@@ -23,13 +23,15 @@ Repositorio de pruebas de automatización QA con Pactum.js nativo y BDD con Cucu
 │   │   ├── api/               # Features de APIs
 │   │   │   ├── comafi-eligibility.feature
 │   │   │   ├── comafi-simulacion.feature
-│   │   │   └── galicia-eligibility.feature
+│   │   │   ├── galicia-eligibility.feature
+│   │   │   └── galicia-simulacion.feature
 │   │   ├── step_definitions/  # Definiciones de pasos
 │   │   │   ├── comafi-auth_steps.js
 │   │   │   ├── api_steps.js
 │   │   │   ├── comafi-eligibility_steps.js
 │   │   │   ├── comafi-simulation_steps.js
-│   │   │   └── galicia_eligibility_steps.js
+│   │   │   ├── galicia_eligibility_steps.js
+│   │   │   └── galicia-simulation_steps.js
 │   │   └── support/           # Configuración y helpers
 │   │       ├── hooks.js
 │   │       ├── world.js
@@ -67,6 +69,7 @@ npx cucumber-js tests/features/auth/comafi-authentication.feature
 npx cucumber-js tests/features/api/comafi-eligibility.feature
 npx cucumber-js tests/features/api/comafi-simulacion.feature
 npx cucumber-js tests/features/api/galicia-eligibility.feature
+npx cucumber-js tests/features/api/galicia-simulacion.feature
 
 # Ejecutar por tags (IMPORTANTE: incluir la ruta)
 npx cucumber-js tests/features/ --tags "@smoke"
@@ -85,6 +88,15 @@ npx cucumber-js tests/features/ --tags "@galicia and @smoke"
 npx cucumber-js tests/features/ --tags "@auth-token"
 npx cucumber-js tests/features/ --tags "@eligibility-flow"
 npx cucumber-js tests/features/ --tags "@simulation-flow"
+
+# Ejecutar autenticación y elegibilidad en secuencia
+# En bash/Linux/Mac:
+npx cucumber-js tests/features/ --tags "@auth-token" && npx cucumber-js tests/features/ --tags "@eligibility-flow"
+# En PowerShell (Windows), ejecutar por separado:
+npx cucumber-js tests/features/ --tags "@auth-token"
+npx cucumber-js tests/features/ --tags "@eligibility-flow"
+
+# O usar los scripts NPM (funciona en todos los sistemas):
 npm run test:cucumber:auth-to-eligibility
 npm run test:cucumber:auth-to-simulation
 
@@ -108,6 +120,10 @@ npm run test:cucumber:eligibility-flow   # Flujo de elegibilidad
 npm run test:cucumber:simulation-flow    # Flujo de simulación
 npm run test:cucumber:auth-to-eligibility # Auth + elegibilidad
 npm run test:cucumber:auth-to-simulation  # Auth + simulación
+
+# Generación de reportes
+npm run report:html                      # Generar reporte HTML desde JSON
+npm run test:cucumber:with-report        # Ejecutar tests y generar reporte HTML
 ```
 
 ## 🌍 Configuración por Ambientes
@@ -184,6 +200,17 @@ NODE_ENV=production npx cucumber-js tests/features/ --profile production
 - **Validación de ofertas** con estructura detallada
 - **Manejo de errores** (400, 500, 503, 504)
 
+### 📊 Simulación Galicia (BDD)
+**Feature:** `tests/features/api/galicia-simulacion.feature`
+- **Simulación de préstamos** en Galicia con datos de financiamiento
+- **Autenticación con app_id y app_key** (sin token Bearer)
+- **Validación de parámetros** de simulación (monto, cuotas, tasa, condiciones comerciales)
+- **Cálculo de condiciones** de financiamiento (CFT, TNA, TEA, TEM)
+- **Validación de estructura** completa de respuesta JSON
+- **Validación de datos financieros** (monto crédito, cuota promedio, subsidios)
+- **Validación de cuotas** con estructura detallada (amortización, intereses, IVA)
+- **Manejo de errores** (400, 403)
+
 ## 🏷️ Etiquetas Disponibles
 
 ### Etiquetas por Funcionalidad
@@ -210,6 +237,11 @@ NODE_ENV=production npx cucumber-js tests/features/ --profile production
 # Flujos secuenciales (autenticación + funcionalidad)
 npx cucumber-js tests/features/ --tags "@auth-token"
 npx cucumber-js tests/features/ --tags "@eligibility-flow"
+
+# Ejecutar autenticación y elegibilidad en secuencia
+# En bash/Linux/Mac:
+npx cucumber-js tests/features/ --tags "@auth-token" && npx cucumber-js tests/features/ --tags "@eligibility-flow"
+# En PowerShell (Windows), ejecutar por separado o usar scripts NPM:
 npm run test:cucumber:auth-to-eligibility
 
 # Combinar etiquetas
@@ -282,6 +314,15 @@ Los reportes se generan automáticamente en la carpeta `reports/`:
 - **`cucumber-report.html`** - Reporte visual interactivo
 - **Configuración automática** - Se generan con cada ejecución
 - **Análisis detallado** - Por feature, escenario y paso
+
+### Generar Reporte HTML
+```bash
+# Generar reporte HTML desde el JSON existente
+npm run report:html
+
+# Ejecutar tests y generar reporte en un solo comando
+npm run test:cucumber:with-report
+```
 
 ## 🚀 Ejemplos de Uso
 
@@ -455,6 +496,30 @@ Feature: API de Elegibilidad Galicia
     And la respuesta debería contener el campo data
     And la respuesta debería contener numeroTransaccion
     And la respuesta debería contener ofertas
+```
+
+### Test de Simulación Galicia (BDD)
+```gherkin
+Feature: API de Simulación Galicia
+  Como usuario del sistema
+  Quiero simular un préstamo en Galicia
+  Para poder calcular las condiciones y montos de financiamiento
+
+  Background:
+    Given el servicio de simulación Galicia está disponible
+
+  @smoke @galicia @simulation @simulation-flow
+  Scenario: Simular préstamo con datos válidos
+    Given tengo datos de simulación Galicia válidos
+    When envío una petición POST a "/galicia/v1/agfi/gateway-nera/prestamo/simulacion"
+    Then debería recibir un código de estado 200
+    And la respuesta debería contener el campo meta
+    And la respuesta debería contener el campo data
+    And la respuesta debería contener numeroTransaccion en data
+    And la respuesta debería contener idOferta en data
+    And la respuesta debería contener idLinea en data
+    And la respuesta debería contener datosFinancieros en data
+    And la respuesta debería contener cuotas en data
 ```
 
 ## 📝 Notas

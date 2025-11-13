@@ -35,9 +35,9 @@
   "author": "QA Team",
   "license": "MIT",
   "devDependencies": {
+    "@cucumber/cucumber": "^12.2.0",
     "@cucumber/html-formatter": "^22.0.0",
     "chai": "^4.3.7",
-    "cucumber": "^6.0.7",
     "cucumber-html-reporter": "^7.2.0",
     "mocha": "^10.2.0",
     "nyc": "^15.1.0",

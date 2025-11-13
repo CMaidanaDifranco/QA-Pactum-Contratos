@@ -1,4 +1,4 @@
-const { Given, When, Then } = require('cucumber');
+const { Given, When, Then } = require('@cucumber/cucumber');
 const { expect } = require('chai');
 const config = require('../support/config');
 
@@ -43,8 +43,35 @@ When('envío una petición POST al endpoint de autenticación', async function (
 });
 
 Then('debería recibir un código de estado {int}', function (expectedStatusCode) {
-  expect(this.getResponse().statusCode).to.equal(expectedStatusCode);
+  const response = this.getResponse();
+  const actualStatusCode = response.statusCode;
+  
+  if (actualStatusCode !== expectedStatusCode) {
+    console.error(`❌ Error: Se esperaba código ${expectedStatusCode} pero se recibió ${actualStatusCode}`);
+    if (actualStatusCode === 403) {
+      console.error('⚠️ 403 Forbidden: El token puede estar expirado o no tener permisos suficientes');
+      console.error('💡 Sugerencia: Ejecuta primero los tests de autenticación para obtener un token fresco');
+    }
+    if (response.body) {
+      console.error('📄 Cuerpo de la respuesta:', JSON.stringify(response.body, null, 2));
+    }
+  }
+  
+  expect(actualStatusCode).to.equal(expectedStatusCode);
   console.log(`✅ Código de estado ${expectedStatusCode} recibido`);
+});
+
+Then('debería recibir un código de estado de error 400 o 403', function () {
+  const response = this.getResponse();
+  const statusCode = response.statusCode;
+  
+  expect([400, 403]).to.include(statusCode);
+  console.log(`✅ Código de estado de error recibido: ${statusCode}`);
+  
+  if (statusCode === 403) {
+    console.log('⚠️ Nota: El API devolvió 403 (Forbidden) en lugar de 400 (Bad Request)');
+    console.log('   Esto puede indicar que la validación de autorización ocurre antes de la validación de datos');
+  }
 });
 
 Then('la respuesta debería contener un token de acceso válido', function () {

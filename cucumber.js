@@ -6,8 +6,7 @@ module.exports = {
     ],
     format: [
       'progress-bar',
-      'json:reports/cucumber-report.json',
-      ['@cucumber/html-formatter', 'reports/cucumber-report.html']
+      'json:reports/cucumber-report.json'
     ],
     formatOptions: {
       snippetInterface: 'async-await'
@@ -28,8 +27,7 @@ module.exports = {
     ],
     format: [
       'progress-bar',
-      'json:reports/cucumber-report.json',
-      ['@cucumber/html-formatter', 'reports/cucumber-report.html']
+      'json:reports/cucumber-report.json'
     ],
     publishQuiet: true,
     timeout: 60000 // 60 segundos para permitir peticiones HTTP largas
@@ -51,8 +49,7 @@ module.exports = {
       'tests/features/step_definitions/**/*.js'
     ],
     format: [
-      'json:reports/cucumber-report.json',
-      ['@cucumber/html-formatter', 'reports/cucumber-report.html']
+      'json:reports/cucumber-report.json'
     ],
     publishQuiet: true,
     retry: 2

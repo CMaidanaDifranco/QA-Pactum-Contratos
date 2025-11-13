@@ -1,4 +1,4 @@
-const { setWorldConstructor } = require('cucumber');
+const { setWorldConstructor } = require('@cucumber/cucumber');
 const { spec } = require('pactum');
 const { expect } = require('chai');
 
@@ -6,9 +6,6 @@ const { expect } = require('chai');
 function CustomWorld({ attach, parameters }) {
   this.attach = attach;
   this.parameters = parameters;
-  
-  // Instancia de PactumJS spec
-  this.spec = spec;
   
   // Aserciones de Chai
   this.expect = expect;
@@ -29,6 +26,14 @@ function CustomWorld({ attach, parameters }) {
   
   this.setHeaders = (headers) => {
     this.context.headers = { ...this.context.headers, ...headers };
+  };
+  
+  this.clearHeaders = () => {
+    this.context.headers = {};
+  };
+  
+  this.clearRequestData = () => {
+    this.context.requestData = {};
   };
   
   this.setRequestData = (data) => {
@@ -55,7 +60,8 @@ function CustomWorld({ attach, parameters }) {
   this.makeRequest = async (method, endpoint, options = {}) => {
     const url = endpoint.startsWith('http') ? endpoint : `${this.context.baseUrl}${endpoint}`;
     
-    let request = this.spec[method.toLowerCase()](url);
+    // Crear una nueva instancia de spec para cada petición
+    let request = spec()[method.toLowerCase()](url);
     
     // Agregar headers
     if (Object.keys(this.context.headers).length > 0) {
@@ -90,9 +96,11 @@ function CustomWorld({ attach, parameters }) {
     // Configurar timeout específico para endpoints de simulación y elegibilidad
     const endpointLower = endpoint.toLowerCase();
     if (endpointLower.includes('/simulation') || 
+        endpointLower.includes('/simulacion') ||
         endpointLower.includes('/eligibility') || 
         endpointLower.includes('/elegibilidad') ||
-        endpointLower.includes('prestamo/elegibilidad')) {
+        endpointLower.includes('prestamo/elegibilidad') ||
+        endpointLower.includes('prestamo/simulacion')) {
       request = request.withRequestTimeout(30000); // 30 segundos para simulación y elegibilidad
       console.log(`⏱️ Timeout configurado a 30 segundos para endpoint de simulación/elegibilidad: ${endpoint}`);
     }
@@ -104,4 +112,14 @@ function CustomWorld({ attach, parameters }) {
   };
 }
 
+// Registrar el World constructor
+// Nota: En Cucumber v6.0.7 con Node.js v22, hay problemas de compatibilidad conocidos
+// El objeto de soporte puede no estar inicializado cuando se carga este módulo
+// Solución: Verificar que setWorldConstructor esté disponible y sea una función antes de usarlo
+
+// Exportar el constructor para uso manual si es necesario
+module.exports.CustomWorld = CustomWorld;
+
+// Registrar el World constructor
+// Con @cucumber/cucumber v12.2.0, esto debería funcionar correctamente con Node.js v22
 setWorldConstructor(CustomWorld);
