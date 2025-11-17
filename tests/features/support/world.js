@@ -97,10 +97,10 @@ function CustomWorld({ attach, parameters }) {
     const endpointLower = endpoint.toLowerCase();
     const urlLower = url.toLowerCase();
     
-    // Timeout extendido para endpoints de Galicia (pueden tardar más)
+    // Timeout extendido para endpoints de Galicia (pueden tardar más o tener problemas de conectividad)
     if (endpointLower.includes('/galicia/') || urlLower.includes('/galicia/')) {
-      request = request.withRequestTimeout(60000); // 60 segundos para endpoints de Galicia
-      console.log(`⏱️ Timeout configurado a 60 segundos para endpoint de Galicia: ${endpoint}`);
+      request = request.withRequestTimeout(90000); // 90 segundos para endpoints de Galicia
+      console.log(`⏱️ Timeout configurado a 90 segundos para endpoint de Galicia: ${endpoint}`);
     } else if (endpointLower.includes('/simulation') || 
         endpointLower.includes('/simulacion') ||
         endpointLower.includes('/eligibility') || 
@@ -111,10 +111,27 @@ function CustomWorld({ attach, parameters }) {
       console.log(`⏱️ Timeout configurado a 30 segundos para endpoint de simulación/elegibilidad: ${endpoint}`);
     }
     
-    // Ejecutar solicitud
-    const response = await request.toss();
-    this.setResponse(response);
-    return response;
+    // Ejecutar solicitud con manejo de errores mejorado
+    try {
+      const response = await request.toss();
+      this.setResponse(response);
+      return response;
+    } catch (error) {
+      // Mejorar mensaje de error para diagnóstico
+      if (error.message && error.message.includes('Timeout')) {
+        console.error(`⏱️ Timeout alcanzado para: ${url}`);
+        console.error(`   Endpoint: ${endpoint}`);
+        console.error(`   Timeout configurado: ${endpointLower.includes('/galicia/') || urlLower.includes('/galicia/') ? '90s' : '30s'}`);
+        console.error(`   Esto puede indicar problemas de conectividad o que el servidor no responde`);
+      } else if (error.message && error.message.includes('ECONNREFUSED')) {
+        console.error(`🚫 Conexión rechazada para: ${url}`);
+        console.error(`   El servidor puede no estar accesible desde esta ubicación`);
+      } else if (error.message && error.message.includes('ENOTFOUND')) {
+        console.error(`🔍 DNS no resuelto para: ${url}`);
+        console.error(`   Verifica que el dominio sea correcto y accesible`);
+      }
+      throw error;
+    }
   };
 }
 

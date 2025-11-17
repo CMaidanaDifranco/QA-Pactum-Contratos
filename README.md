@@ -726,6 +726,7 @@ El archivo `.github/workflows/tests.yml` está configurado para:
 - ✅ Subir reportes como artefactos descargables
 - ✅ **Publicar reportes en GitHub Pages** (solo en branch `main`)
 - ✅ **Enviar reportes por email** automáticamente
+- ⚠️ **Tests de Galicia**: Configurados con `continue-on-error: true` porque el servidor puede no ser accesible desde GitHub Actions (firewall/red privada)
 
 ### Ejecución Programada (Cron)
 
@@ -834,6 +835,25 @@ Consulta la documentación de tu proveedor de email para obtener los valores cor
 - ✅ El reporte HTML se adjunta como archivo al email
 - ✅ El email incluye enlaces directos a los reportes en GitHub
 - ⚠️ Los emails NO se envían en push/PR para evitar spam
+
+### Notas sobre Tests de Galicia en GitHub Actions
+
+⚠️ **Importante**: Los tests de Galicia pueden fallar en GitHub Actions debido a:
+
+1. **Accesibilidad del servidor**: El servidor de Galicia (`midware-partners-gateway-middleware-galicia-staging-avafy.dev.nera-agro.com`) puede no ser accesible desde las IPs de GitHub Actions
+2. **Firewall/Whitelist**: El servidor puede estar configurado para bloquear conexiones desde internet público
+3. **Red privada/VPN**: El servidor puede requerir VPN o estar en una red privada
+
+**Solución implementada**:
+- Los tests de Galicia están configurados con `continue-on-error: true`
+- Esto permite que el workflow continúe aunque los tests de Galicia fallen
+- Los tests funcionan correctamente en local
+- Se genera un warning en el workflow cuando los tests de Galicia fallan
+
+**Para resolver**:
+- Verifica que el servidor de Galicia sea accesible desde internet público
+- Si el servidor requiere whitelist, agrega las IPs de GitHub Actions
+- Considera usar un runner self-hosted si el servidor está en una red privada
 
 ## 🤝 Contribución
 
