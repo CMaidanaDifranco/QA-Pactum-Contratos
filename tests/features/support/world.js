@@ -97,10 +97,27 @@ function CustomWorld({ attach, parameters }) {
     const endpointLower = endpoint.toLowerCase();
     const urlLower = url.toLowerCase();
     
+    // Detectar endpoints de Galicia (tanto elegibilidad como simulación)
+    // Verificar en endpoint y URL completa para mayor robustez
+    const isGaliciaEndpoint = endpointLower.includes('/galicia/') || 
+                              endpointLower.includes('galicia') ||
+                              urlLower.includes('/galicia/') || 
+                              urlLower.includes('galicia') ||
+                              urlLower.includes('middleware-galicia');
+    
+    // Debug: mostrar información de detección
+    if (isGaliciaEndpoint) {
+      console.log(`🔍 Endpoint de Galicia detectado:`);
+      console.log(`   Endpoint: ${endpoint}`);
+      console.log(`   URL completa: ${url}`);
+      console.log(`   Detección: endpointLower.includes('/galicia/')=${endpointLower.includes('/galicia/')}, urlLower.includes('middleware-galicia')=${urlLower.includes('middleware-galicia')}`);
+    }
+    
     // Timeout extendido para endpoints de Galicia (pueden tardar más o tener problemas de conectividad)
-    if (endpointLower.includes('/galicia/') || urlLower.includes('/galicia/')) {
+    if (isGaliciaEndpoint) {
       request = request.withRequestTimeout(90000); // 90 segundos para endpoints de Galicia
       console.log(`⏱️ Timeout configurado a 90 segundos para endpoint de Galicia: ${endpoint}`);
+      console.log(`   URL completa: ${url}`);
     } else if (endpointLower.includes('/simulation') || 
         endpointLower.includes('/simulacion') ||
         endpointLower.includes('/eligibility') || 
@@ -113,15 +130,27 @@ function CustomWorld({ attach, parameters }) {
     
     // Ejecutar solicitud con manejo de errores mejorado
     try {
+      // Log adicional para confirmar que el timeout está configurado
+      if (isGaliciaEndpoint) {
+        console.log(`🚀 Ejecutando petición a Galicia con timeout de 90 segundos...`);
+      }
       const response = await request.toss();
       this.setResponse(response);
+      if (isGaliciaEndpoint) {
+        console.log(`✅ Petición a Galicia completada exitosamente`);
+      }
       return response;
     } catch (error) {
       // Mejorar mensaje de error para diagnóstico
       if (error.message && error.message.includes('Timeout')) {
         console.error(`⏱️ Timeout alcanzado para: ${url}`);
         console.error(`   Endpoint: ${endpoint}`);
-        console.error(`   Timeout configurado: ${endpointLower.includes('/galicia/') || urlLower.includes('/galicia/') ? '90s' : '30s'}`);
+        const isGalicia = endpointLower.includes('/galicia/') || 
+                         endpointLower.includes('galicia') ||
+                         urlLower.includes('/galicia/') || 
+                         urlLower.includes('galicia') ||
+                         urlLower.includes('middleware-galicia');
+        console.error(`   Timeout configurado: ${isGalicia ? '90s' : '30s'}`);
         console.error(`   Esto puede indicar problemas de conectividad o que el servidor no responde`);
       } else if (error.message && error.message.includes('ECONNREFUSED')) {
         console.error(`🚫 Conexión rechazada para: ${url}`);
