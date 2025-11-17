@@ -46,15 +46,162 @@ Repositorio de pruebas de automatización QA con Pactum.js nativo y BDD con Cucu
 
 ## 🛠️ Instalación
 
-```bash
-# Instalar dependencias
-npm install
+### Requisitos Previos
 
-# Verificar instalación
-npm test
+Antes de instalar, asegúrate de tener instalado:
+
+- **Node.js** (versión 18 o superior) - [Descargar Node.js](https://nodejs.org/)
+- **npm** (viene incluido con Node.js) - Verificar versión: `npm --version`
+- **Git** (para clonar el repositorio) - [Descargar Git](https://git-scm.com/)
+
+### Verificar Requisitos
+
+```bash
+# Verificar Node.js
+node --version    # Debe ser v18 o superior
+
+# Verificar npm
+npm --version     # Debe ser v9 o superior
+
+# Verificar Git
+git --version
+```
+
+### Instalación Paso a Paso
+
+#### 1. Clonar el Repositorio
+
+```bash
+# Clonar desde GitHub
+git clone https://github.com/CMaidanaDifranco/QA-Pactum-Contratos.git
+
+# O descargar y extraer el ZIP, luego navegar a la carpeta
+cd QA-Pactum-Contratos
+```
+
+#### 2. Instalar Dependencias
+
+```bash
+# Instalar todas las dependencias (Pactum, Cucumber, Chai, Mocha, etc.)
+npm install
+```
+
+Este comando instalará automáticamente:
+- ✅ **@cucumber/cucumber** - Framework BDD
+- ✅ **@cucumber/html-formatter** - Generador de reportes HTML
+- ✅ **pactum** - Framework de testing API
+- ✅ **chai** - Librería de aserciones
+- ✅ **mocha** - Test runner
+- ✅ **cucumber-html-reporter** - Reporter de Cucumber
+- ✅ **nyc** - Cobertura de código
+
+> **Nota**: Después de `npm install`, se ejecutará automáticamente el script `verify:install` que verificará que todas las dependencias se instalaron correctamente.
+
+#### 3. Verificar Instalación
+
+```bash
+# Verificar que todas las dependencias se instalaron correctamente
+npm run verify:install
+
+# O verificar manualmente
+npm list --depth=0
+```
+
+#### 4. Ejecutar Tests de Verificación
+
+```bash
+# Ejecutar un test simple para verificar que todo funciona
+npm run test:cucumber:smoke
+```
+
+### Instalación Rápida (Un Solo Comando)
+
+```bash
+# Clonar e instalar en un solo paso (bash/Linux/Mac)
+git clone https://github.com/CMaidanaDifranco/QA-Pactum-Contratos.git && cd QA-Pactum-Contratos && npm install && npm run verify:install
+```
+
+### Solución de Problemas
+
+#### Error: "npm: command not found"
+- **Solución**: Instala Node.js desde [nodejs.org](https://nodejs.org/)
+
+#### Error: "EACCES: permission denied"
+- **Solución**: En Linux/Mac, usa `sudo npm install` o configura npm para no usar sudo:
+  ```bash
+  mkdir ~/.npm-global
+  npm config set prefix '~/.npm-global'
+  export PATH=~/.npm-global/bin:$PATH
+  ```
+
+#### Error: "ERESOLVE unable to resolve dependency"
+- **Solución**: Usa `npm install --legacy-peer-deps` o actualiza npm:
+  ```bash
+  npm install -g npm@latest
+  npm install
+  ```
+
+#### Error: "Cannot find module '@cucumber/cucumber'"
+- **Solución**: Reinstala las dependencias:
+  ```bash
+  rm -rf node_modules package-lock.json
+  npm install
+  ```
+
+### Verificación Post-Instalación
+
+Después de instalar, verifica que todo esté correcto:
+
+```bash
+# 1. Verificar estructura de carpetas
+ls tests/features/
+
+# 2. Verificar que los módulos están instalados
+npm list @cucumber/cucumber pactum chai
+
+# 3. Ejecutar un test de ejemplo
+npm run test:cucumber:auth-token
+```
+
+### Actualizar Dependencias
+
+```bash
+# Verificar dependencias desactualizadas
+npm outdated
+
+# Actualizar todas las dependencias
+npm update
+
+# Actualizar a las últimas versiones (puede romper compatibilidad)
+npm install @cucumber/cucumber@latest pactum@latest --save-dev
 ```
 
 ## 🧪 Ejecutar Pruebas
+
+### Flujos Secuenciales de Pruebas (Recomendado para CI/CD)
+
+Estos comandos ejecutan features específicos en secuencia, ideales para GitHub Actions y pipelines de CI/CD:
+
+```bash
+# 1. Comafi completo: Autenticación + Elegibilidad + Simulación
+npm run test:comafi:full
+
+# 2. Comafi: Autenticación + Elegibilidad
+npm run test:comafi:auth-eligibility
+
+# 3. Galicia: Solo Elegibilidad
+npm run test:galicia:eligibility
+
+# 4. Galicia: Elegibilidad + Simulación
+npm run test:galicia:eligibility-simulation
+```
+
+**Características:**
+- ✅ Ejecuta features en secuencia (uno después del otro)
+- ✅ Funciona en todos los sistemas operativos (Windows, Linux, Mac)
+- ✅ Muestra resumen detallado al finalizar
+- ✅ Detiene ejecución si un feature falla (configurable)
+- ✅ Ideal para GitHub Actions y CI/CD
 
 ### Tests BDD con Cucumber (Gherkin)
 ```bash
@@ -92,11 +239,15 @@ npx cucumber-js tests/features/ --tags "@simulation-flow"
 # Ejecutar autenticación y elegibilidad en secuencia
 # En bash/Linux/Mac:
 npx cucumber-js tests/features/ --tags "@auth-token" && npx cucumber-js tests/features/ --tags "@eligibility-flow"
-# En PowerShell (Windows), ejecutar por separado:
+
+# En PowerShell (Windows) - OPCIÓN 1: Ejecutar por separado
 npx cucumber-js tests/features/ --tags "@auth-token"
 npx cucumber-js tests/features/ --tags "@eligibility-flow"
 
-# O usar los scripts NPM (funciona en todos los sistemas):
+# En PowerShell (Windows) - OPCIÓN 2: Con verificación de éxito
+npx cucumber-js tests/features/ --tags "@auth-token"; if ($?) { npx cucumber-js tests/features/ --tags "@eligibility-flow" }
+
+# OPCIÓN 3: Usar los scripts NPM (funciona en todos los sistemas - RECOMENDADO):
 npm run test:cucumber:auth-to-eligibility
 npm run test:cucumber:auth-to-simulation
 
@@ -124,6 +275,16 @@ npm run test:cucumber:auth-to-simulation  # Auth + simulación
 # Generación de reportes
 npm run report:html                      # Generar reporte HTML desde JSON
 npm run test:cucumber:with-report        # Ejecutar tests y generar reporte HTML
+
+# Verificación e instalación
+npm run verify:install                   # Verificar que todas las dependencias están instaladas
+# Nota: Este script se ejecuta automáticamente después de 'npm install' (postinstall)
+
+# Flujos secuenciales de pruebas (para CI/CD y GitHub Actions)
+npm run test:comafi:full                 # Comafi completo: auth + eligibility + simulation
+npm run test:comafi:auth-eligibility     # Comafi: auth + eligibility
+npm run test:galicia:eligibility         # Galicia: eligibility
+npm run test:galicia:eligibility-simulation # Galicia: eligibility + simulation
 ```
 
 ## 🌍 Configuración por Ambientes
@@ -241,7 +402,15 @@ npx cucumber-js tests/features/ --tags "@eligibility-flow"
 # Ejecutar autenticación y elegibilidad en secuencia
 # En bash/Linux/Mac:
 npx cucumber-js tests/features/ --tags "@auth-token" && npx cucumber-js tests/features/ --tags "@eligibility-flow"
-# En PowerShell (Windows), ejecutar por separado o usar scripts NPM:
+
+# En PowerShell (Windows) - OPCIÓN 1: Ejecutar por separado
+npx cucumber-js tests/features/ --tags "@auth-token"
+npx cucumber-js tests/features/ --tags "@eligibility-flow"
+
+# En PowerShell (Windows) - OPCIÓN 2: Con verificación de éxito
+npx cucumber-js tests/features/ --tags "@auth-token"; if ($?) { npx cucumber-js tests/features/ --tags "@eligibility-flow" }
+
+# OPCIÓN 3: Usar scripts NPM (funciona en todos los sistemas - RECOMENDADO):
 npm run test:cucumber:auth-to-eligibility
 
 # Combinar etiquetas
@@ -268,11 +437,11 @@ npx cucumber-js tests/features/ --tags "not @error"
 Las credenciales están configuradas en `tests/features/support/config.js`:
 
 ```javascript
-// Development/Staging
+// Development/Staging (valores hardcodeados - solo para QA)
 auth: {
-  clientId: '5872d210',
-  clientSecret: 'b18338211e2f6527ec04ead2c556252',
-  authHeader: 'Basic NTg3MmQyMTA6YjE4MzM4MjExZTJmNjUyN2VjMDRlYWQyYzU1NjI1Mg==',
+  clientId: 'your_client_id',
+  clientSecret: 'your_client_secret',
+  authHeader: 'Basic YOUR_BASE64_ENCODED_CREDENTIALS',
   tokenEndpoint: '/auth/realms/hbe-sso/protocol/openid-connect/token'
 }
 
@@ -284,6 +453,12 @@ auth: {
   tokenEndpoint: '/auth/realms/hbe-sso/protocol/openid-connect/token'
 }
 ```
+
+⚠️ **IMPORTANTE - Seguridad:**
+- **NUNCA** expongas credenciales reales en el código o documentación pública
+- Usa variables de entorno para producción
+- Las credenciales de desarrollo/staging deben estar en archivos de configuración locales (no versionados)
+- Considera usar `.env` files con `.gitignore` para credenciales sensibles
 
 ### Configuración de Cucumber
 ```javascript
@@ -368,7 +543,7 @@ describe('OAuth2 Authentication', () => {
 
   it('should set OAuth2 headers', async () => {
     _spec.withHeaders({
-      'Authorization': 'Basic NTg3MmQyMTA6YjE4MzM4MjExZTJmNjUyN2VjMDRlYWQyYzU1NjI1Mg=='
+      'Authorization': 'Basic YOUR_BASE64_ENCODED_CREDENTIALS'
     });
   });
 
@@ -402,7 +577,7 @@ describe('Authentication Token API Tests', () => {
       .withHeaders({
         'User-Agent': 'NeraApis',
         'Content-Type': 'application/x-www-form-urlencoded',
-        'Authorization': 'Basic NTg3MmQyMTA6YjE4MzM4MjExZTJmNjUyN2VjMDRlYWRhMmM1NTYyNTI='
+        'Authorization': 'Basic YOUR_BASE64_ENCODED_CREDENTIALS'
       })
       .withBody('grant_type=client_credentials')
       .expectStatus(200)
@@ -534,6 +709,114 @@ Feature: API de Simulación Galicia
 - **Configuración por ambientes** - Development, staging, production
 - **Step definitions organizados** - Por funcionalidad (auth, api, eligibility, simulation, galicia)
 - **Estructura limpia** - Sin archivos obsoletos o no utilizados
+
+## 🚀 GitHub Actions (CI/CD)
+
+El proyecto incluye un workflow de GitHub Actions configurado para ejecutar los tests automáticamente.
+
+### Workflow Disponible
+
+El archivo `.github/workflows/tests.yml` está configurado para:
+
+- ✅ Ejecutarse en push y pull requests a `main` y `develop`
+- ✅ **Ejecución programada**: Lunes a Viernes a las 8:00 AM (UTC-3)
+- ✅ Ejecutar los 4 flujos de pruebas en paralelo usando matrix strategy
+- ✅ Generar reportes HTML automáticamente
+- ✅ Subir reportes como artefactos descargables
+- ✅ **Publicar reportes en GitHub Pages** (solo en branch `main`)
+- ✅ **Enviar reportes por email** automáticamente
+
+### Ejecución Programada (Cron)
+
+Los tests se ejecutan automáticamente **cada día laboral (Lunes a Viernes) a las 8:00 AM** (hora Argentina, UTC-3).
+
+- **Horario**: 8:00 AM (UTC-3) = 11:00 AM (UTC)
+- **Días**: Lunes (1) a Viernes (5)
+- **Configuración**: `cron: '0 11 * * 1-5'`
+
+Para cambiar el horario, edita el archivo `.github/workflows/tests.yml` y ajusta el valor del cron.
+
+### Ejecutar Tests Manualmente en GitHub
+
+Puedes ejecutar los tests manualmente desde la pestaña "Actions" en GitHub:
+
+1. Ve a **Actions** → **Tests QA Pactum Contratos**
+2. Click en **Run workflow**
+3. Selecciona el suite de tests a ejecutar:
+   - `comafi:full` - Comafi completo
+   - `comafi:auth-eligibility` - Comafi auth + eligibility
+   - `galicia:eligibility` - Galicia eligibility
+   - `galicia:eligibility-simulation` - Galicia eligibility + simulation
+4. Opcional: Marca/desmarca "Enviar reporte por email"
+5. Click en **Run workflow**
+
+### Ver Reportes en GitHub Actions
+
+Después de que los tests completen:
+
+1. Ve a la ejecución del workflow
+2. Descarga el artefacto `cucumber-report-<suite-name>`
+3. O descarga el artefacto `consolidated-report` para ver todos los reportes
+4. Abre el archivo HTML en tu navegador
+
+### Reportes en GitHub Pages
+
+Los reportes se publican automáticamente en GitHub Pages cuando se ejecutan en la rama `main`:
+
+- **URL**: `https://<usuario>.github.io/<repositorio>/reports/<run-number>/cucumber-report.html`
+- Solo se publica el reporte del suite `comafi:full` para evitar duplicados
+
+### Configuración de Email
+
+Para recibir reportes por email, necesitas configurar los siguientes **Secrets** en GitHub:
+
+1. Ve a **Settings** → **Secrets and variables** → **Actions**
+2. Agrega los siguientes secrets:
+
+#### Secrets Requeridos para Email:
+
+| Secret | Descripción | Ejemplo |
+|--------|-------------|---------|
+| `SMTP_SERVER` | Servidor SMTP | `smtp.gmail.com` o `smtp.office365.com` |
+| `SMTP_PORT` | Puerto SMTP | `587` (TLS) o `465` (SSL) |
+| `SMTP_USERNAME` | Usuario SMTP | `tu-email@gmail.com` |
+| `SMTP_PASSWORD` | Contraseña SMTP | Tu contraseña o App Password |
+| `EMAIL_FROM` | Email remitente | `qa-tests@tu-empresa.com` |
+| `EMAIL_TO` | Email destinatario | `equipo-qa@tu-empresa.com` |
+
+#### Configuración para Gmail:
+
+1. Habilita "Contraseñas de aplicaciones" en tu cuenta de Google
+2. Genera una contraseña de aplicación
+3. Usa estos valores:
+   - `SMTP_SERVER`: `smtp.gmail.com`
+   - `SMTP_PORT`: `587`
+   - `SMTP_USERNAME`: Tu email de Gmail
+   - `SMTP_PASSWORD`: La contraseña de aplicación generada
+   - `EMAIL_FROM`: Tu email de Gmail
+   - `EMAIL_TO`: Email donde quieres recibir los reportes
+
+#### Configuración para Office 365 / Outlook:
+
+1. Usa estos valores:
+   - `SMTP_SERVER`: `smtp.office365.com`
+   - `SMTP_PORT`: `587`
+   - `SMTP_USERNAME`: Tu email de Office 365
+   - `SMTP_PASSWORD`: Tu contraseña de Office 365
+   - `EMAIL_FROM`: Tu email de Office 365
+   - `EMAIL_TO`: Email donde quieres recibir los reportes
+
+#### Configuración para Otros Servidores SMTP:
+
+Consulta la documentación de tu proveedor de email para obtener los valores correctos de servidor y puerto.
+
+### Notas sobre Email
+
+- ✅ Los emails se envían automáticamente en ejecuciones programadas (cron)
+- ✅ Los emails se pueden enviar manualmente desde `workflow_dispatch` (opción configurable)
+- ✅ El reporte HTML se adjunta como archivo al email
+- ✅ El email incluye enlaces directos a los reportes en GitHub
+- ⚠️ Los emails NO se envían en push/PR para evitar spam
 
 ## 🤝 Contribución
 

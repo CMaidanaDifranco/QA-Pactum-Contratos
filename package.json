@@ -23,7 +23,13 @@
     "test:cucumber:auth-to-eligibility": "cucumber-js tests/features/ --tags @auth-token --config cucumber.js && cucumber-js tests/features/ --tags @eligibility-flow --config cucumber.js",
     "test:cucumber:auth-to-simulation": "cucumber-js tests/features/ --tags @auth-token --config cucumber.js && cucumber-js tests/features/ --tags @simulation-flow --config cucumber.js",
     "report:html": "node generate-html-report.js",
-    "test:cucumber:with-report": "cucumber-js --config cucumber.js && npm run report:html"
+    "test:cucumber:with-report": "cucumber-js --config cucumber.js && npm run report:html",
+    "verify:install": "node scripts/verify-install.js",
+    "postinstall": "npm run verify:install",
+    "test:comafi:full": "node scripts/run-features-sequential.js tests/features/auth/comafi-authentication.feature tests/features/api/comafi-eligibility.feature tests/features/api/comafi-simulacion.feature",
+    "test:comafi:auth-eligibility": "node scripts/run-features-sequential.js tests/features/auth/comafi-authentication.feature tests/features/api/comafi-eligibility.feature",
+    "test:galicia:eligibility": "node scripts/run-features-sequential.js tests/features/api/galicia-eligibility.feature",
+    "test:galicia:eligibility-simulation": "node scripts/run-features-sequential.js tests/features/api/galicia-eligibility.feature tests/features/api/galicia-simulacion.feature"
   },
   "keywords": [
     "qa",

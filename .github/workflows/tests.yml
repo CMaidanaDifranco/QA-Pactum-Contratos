@@ -1,0 +1,180 @@
+name: Tests QA Pactum Contratos
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  # Ejecutar automáticamente cada día a las 8:00 AM (Lunes a Viernes)
+  # Timezone: UTC-3 (Argentina). Ajusta según tu zona horaria
+  # Formato: minuto hora día-del-mes mes día-de-la-semana
+  # 0 = Domingo, 1 = Lunes, ..., 5 = Viernes, 6 = Sábado
+  schedule:
+    # Lunes a Viernes a las 8:00 AM (UTC-3 = 11:00 UTC)
+    - cron: '0 11 * * 1-5'
+  workflow_dispatch:
+    inputs:
+      test_suite:
+        description: 'Suite de tests a ejecutar'
+        required: true
+        default: 'comafi:full'
+        type: choice
+        options:
+          - comafi:full
+          - comafi:auth-eligibility
+          - galicia:eligibility
+          - galicia:eligibility-simulation
+      send_email:
+        description: 'Enviar reporte por email'
+        required: false
+        default: true
+        type: boolean
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        test-suite:
+          - comafi:full
+          - comafi:auth-eligibility
+          - galicia:eligibility
+          - galicia:eligibility-simulation
+    
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+      
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Instalar dependencias
+        run: npm ci
+      
+      - name: Verificar instalación
+        run: npm run verify:install
+      
+      - name: Ejecutar tests - Comafi completo
+        if: matrix.test-suite == 'comafi:full'
+        run: npm run test:comafi:full
+        continue-on-error: false
+      
+      - name: Ejecutar tests - Comafi auth + eligibility
+        if: matrix.test-suite == 'comafi:auth-eligibility'
+        run: npm run test:comafi:auth-eligibility
+        continue-on-error: false
+      
+      - name: Ejecutar tests - Galicia eligibility
+        if: matrix.test-suite == 'galicia:eligibility'
+        run: npm run test:galicia:eligibility
+        continue-on-error: false
+      
+      - name: Ejecutar tests - Galicia eligibility + simulation
+        if: matrix.test-suite == 'galicia:eligibility-simulation'
+        run: npm run test:galicia:eligibility-simulation
+        continue-on-error: false
+      
+      - name: Generar reporte HTML
+        if: always()
+        run: npm run report:html
+      
+      - name: Subir reporte HTML como artefacto
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cucumber-report-${{ matrix.test-suite }}
+          path: reports/cucumber-report.html
+          retention-days: 30
+      
+      - name: Publicar reporte en GitHub Pages (si es main)
+        if: always() && github.ref == 'refs/heads/main' && matrix.test-suite == 'comafi:full'
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./reports
+          destination_dir: reports/${{ github.run_number }}
+          keep_files: false
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
+
+  # Job para consolidar reportes y enviar email
+  send-report:
+    needs: test
+    runs-on: ubuntu-latest
+    if: always()
+    
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+      
+      - name: Descargar todos los artefactos
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+      
+      - name: Preparar reporte consolidado
+        run: |
+          mkdir -p reports-consolidated
+          # Copiar el primer reporte disponible como reporte principal
+          find artifacts -name "*.html" -type f | head -1 | xargs -I {} cp {} reports-consolidated/cucumber-report.html
+          # Crear índice de reportes
+          echo "# Reportes de Tests QA Pactum Contratos" > reports-consolidated/index.md
+          echo "" >> reports-consolidated/index.md
+          echo "## Ejecución: ${{ github.run_number }}" >> reports-consolidated/index.md
+          echo "Fecha: $(date)" >> reports-consolidated/index.md
+          echo "" >> reports-consolidated/index.md
+          echo "### Reportes Disponibles:" >> reports-consolidated/index.md
+          find artifacts -name "*.html" -type f | while read file; do
+            suite=$(basename $(dirname $file) | sed 's/cucumber-report-//')
+            echo "- [$suite]($suite/cucumber-report.html)" >> reports-consolidated/index.md
+          done
+      
+      - name: Enviar reporte por email
+        if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && github.event.inputs.send_email == 'true')
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: ${{ secrets.SMTP_SERVER }}
+          server_port: ${{ secrets.SMTP_PORT }}
+          username: ${{ secrets.SMTP_USERNAME }}
+          password: ${{ secrets.SMTP_PASSWORD }}
+          subject: |
+            🧪 Reporte de Tests QA Pactum Contratos - Ejecución #${{ github.run_number }}
+          to: ${{ secrets.EMAIL_TO }}
+          from: ${{ secrets.EMAIL_FROM }}
+          body: |
+            <h2>Reporte de Tests QA Pactum Contratos</h2>
+            <p><strong>Ejecución:</strong> #${{ github.run_number }}</p>
+            <p><strong>Fecha:</strong> ${{ github.event.head_commit.timestamp || github.run_started_at }}</p>
+            <p><strong>Commit:</strong> ${{ github.sha }}</p>
+            <p><strong>Autor:</strong> ${{ github.event.head_commit.author.name || 'GitHub Actions' }}</p>
+            <p><strong>Mensaje:</strong> ${{ github.event.head_commit.message || 'Ejecución programada' }}</p>
+            <hr>
+            <h3>Suites Ejecutadas:</h3>
+            <ul>
+              <li>Comafi completo (auth + eligibility + simulation)</li>
+              <li>Comafi auth + eligibility</li>
+              <li>Galicia eligibility</li>
+              <li>Galicia eligibility + simulation</li>
+            </ul>
+            <hr>
+            <p><strong>Ver reportes completos:</strong></p>
+            <p><a href="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}">Ver en GitHub Actions</a></p>
+            <p><a href="${{ github.server_url }}/${{ github.repository }}/blob/main/reports">Ver reportes en GitHub</a></p>
+            <hr>
+            <p><em>Este es un email automático generado por GitHub Actions.</em></p>
+          html: true
+          attachments: reports-consolidated/cucumber-report.html
+          ignore_cert: false
+      
+      - name: Subir reporte consolidado como artefacto
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: consolidated-report
+          path: reports-consolidated
+          retention-days: 90
+
