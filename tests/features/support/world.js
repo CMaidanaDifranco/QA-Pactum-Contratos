@@ -95,13 +95,19 @@ function CustomWorld({ attach, parameters }) {
     
     // Configurar timeout específico para endpoints de simulación y elegibilidad
     const endpointLower = endpoint.toLowerCase();
-    if (endpointLower.includes('/simulation') || 
+    const urlLower = url.toLowerCase();
+    
+    // Timeout extendido para endpoints de Galicia (pueden tardar más)
+    if (endpointLower.includes('/galicia/') || urlLower.includes('/galicia/')) {
+      request = request.withRequestTimeout(60000); // 60 segundos para endpoints de Galicia
+      console.log(`⏱️ Timeout configurado a 60 segundos para endpoint de Galicia: ${endpoint}`);
+    } else if (endpointLower.includes('/simulation') || 
         endpointLower.includes('/simulacion') ||
         endpointLower.includes('/eligibility') || 
         endpointLower.includes('/elegibilidad') ||
         endpointLower.includes('prestamo/elegibilidad') ||
         endpointLower.includes('prestamo/simulacion')) {
-      request = request.withRequestTimeout(30000); // 30 segundos para simulación y elegibilidad
+      request = request.withRequestTimeout(30000); // 30 segundos para otros endpoints de simulación/elegibilidad
       console.log(`⏱️ Timeout configurado a 30 segundos para endpoint de simulación/elegibilidad: ${endpoint}`);
     }
     

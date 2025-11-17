@@ -86,6 +86,12 @@ jobs:
         if: always()
         run: npm run report:html
       
+      - name: Generar resumen visual del reporte
+        if: always()
+        env:
+          TEST_SUITE: ${{ matrix.test-suite }}
+        run: node scripts/generate-workflow-summary.js "${{ matrix.test-suite }}"
+      
       - name: Sanitizar nombre de artefacto
         if: always()
         id: sanitize
@@ -187,6 +193,25 @@ jobs:
           html: true
           attachments: reports-consolidated/cucumber-report.html
           ignore_cert: false
+      
+      - name: Generar resumen consolidado visual
+        if: always()
+        run: |
+          echo "# 📊 Resumen Consolidado de Todos los Tests" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## Ejecución: ${{ github.run_number }}" >> $GITHUB_STEP_SUMMARY
+          echo "Fecha: $(date)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 📦 Suites Ejecutadas:" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          find artifacts -name "*.html" -type f | while read file; do
+            suite=$(basename $(dirname $file) | sed 's/cucumber-report-//')
+            echo "- 📋 **$suite** - [Ver reporte](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> $GITHUB_STEP_SUMMARY
+          done
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 📎 Descargar Reportes" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Todos los reportes están disponibles como artefactos descargables en esta ejecución del workflow." >> $GITHUB_STEP_SUMMARY
       
       - name: Subir reporte consolidado como artefacto
         if: always()

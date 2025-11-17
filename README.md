@@ -753,12 +753,28 @@ Puedes ejecutar los tests manualmente desde la pestaña "Actions" en GitHub:
 
 ### Ver Reportes en GitHub Actions
 
-Después de que los tests completen:
+Después de que los tests completen, los reportes son visibles de múltiples formas:
 
+#### 1. Resumen Visual en Workflow Summary
+- **Ubicación**: Al final de cada ejecución del workflow, en la sección "Summary"
+- **Contenido**: 
+  - 📊 Estadísticas de tests (pasados, fallidos, omitidos)
+  - 📈 Tasa de éxito
+  - ⏱️ Tiempo de ejecución
+  - 📝 Detalles de cada escenario
+  - 🔗 Enlaces a reportes completos
+- **Ventaja**: No necesitas descargar nada, todo está visible directamente en GitHub
+
+#### 2. Artefactos Descargables
 1. Ve a la ejecución del workflow
-2. Descarga el artefacto `cucumber-report-<suite-name>`
-3. O descarga el artefacto `consolidated-report` para ver todos los reportes
-4. Abre el archivo HTML en tu navegador
+2. Scroll hasta la sección "Artifacts"
+3. Descarga el artefacto `cucumber-report-<suite-name>` para cada suite
+4. O descarga el artefacto `consolidated-report` para ver todos los reportes consolidados
+5. Abre el archivo HTML en tu navegador
+
+#### 3. Resumen Consolidado
+- Al final de la ejecución, hay un resumen consolidado que muestra todos los suites ejecutados
+- Incluye enlaces directos a cada reporte
 
 ### Reportes en GitHub Pages
 
