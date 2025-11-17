@@ -426,7 +426,8 @@ npx cucumber-js tests/features/ --tags "not @error"
 ```
 
 ### 🔧 Características Técnicas
-- **Timeout extendido** - 10 segundos para endpoints de simulación/elegibilidad
+- **Timeout extendido** - 90 segundos para endpoints de Galicia, 30 segundos para otros endpoints de simulación/elegibilidad
+- **Timeout de Cucumber** - 120 segundos para permitir peticiones HTTP largas
 - **Token persistence** - Reutilización de tokens entre ejecuciones
 - **Reportes HTML/JSON** - Análisis detallado de resultados
 - **Configuración por ambientes** - Development, staging, production

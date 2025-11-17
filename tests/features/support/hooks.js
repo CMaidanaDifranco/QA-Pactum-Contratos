@@ -1,9 +1,10 @@
 const { Before, After, BeforeAll, AfterAll, setDefaultTimeout } = require('@cucumber/cucumber');
 
-// Configurar timeout por defecto para todos los steps (60 segundos)
-setDefaultTimeout(60 * 1000);
+// Configurar timeout por defecto para todos los steps (120 segundos)
+// Aumentado para permitir peticiones HTTP largas, especialmente para endpoints de Galicia (90s)
+setDefaultTimeout(120 * 1000);
 
-// Nota: El timeout también se configura en cucumber.js (timeout: 60000)
+// Nota: El timeout también se configura en cucumber.js (timeout: 120000)
 // La inicialización del contexto se hace en world.js
 
 // Variables globales

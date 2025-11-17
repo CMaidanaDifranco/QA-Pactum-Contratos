@@ -16,7 +16,7 @@ module.exports = {
     failFast: false,
     retry: 1,
     parallel: 1,
-    timeout: 60000
+    timeout: 120000 // 120 segundos para permitir peticiones HTTP largas (especialmente Galicia con 90s)
   },
   
   // Configuración para diferentes entornos
@@ -30,7 +30,7 @@ module.exports = {
       'json:reports/cucumber-report.json'
     ],
     publishQuiet: true,
-    timeout: 60000 // 60 segundos para permitir peticiones HTTP largas
+    timeout: 120000 // 120 segundos para permitir peticiones HTTP largas (especialmente Galicia con 90s)
   },
   
   staging: {
@@ -40,7 +40,7 @@ module.exports = {
     ],
     format: ['progress-bar'],
     publishQuiet: true,
-    timeout: 60000
+    timeout: 120000 // 120 segundos para permitir peticiones HTTP largas
   },
   
   ci: {
@@ -52,7 +52,8 @@ module.exports = {
       'json:reports/cucumber-report.json'
     ],
     publishQuiet: true,
-    retry: 2
+    retry: 2,
+    timeout: 120000 // 120 segundos para permitir peticiones HTTP largas (especialmente Galicia con 90s)
   }
 };
 

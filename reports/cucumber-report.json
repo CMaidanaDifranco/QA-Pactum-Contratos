@@ -1,82 +1,59 @@
 [
   {
-    "description": "  Como usuario del sistema\n  Quiero autenticarme con la API de Comafi\n  Para poder acceder a recursos protegidos",
-    "keyword": "Feature",
-    "name": "API de Autenticación Comafi",
-    "line": 1,
-    "id": "api-de-autenticación-comafi",
-    "tags": [],
-    "uri": "tests\\features\\auth\\comafi-authentication.feature",
+    "description": "  Como usuario del sistema\n  Quiero simular un préstamo en Galicia\n  Para poder calcular las condiciones y montos de financiamiento",
     "elements": [
       {
-        "id": "api-de-autenticación-comafi;obtener-exitosamente-token-de-acceso-con-credenciales-de-cliente",
+        "description": "",
+        "id": "api-de-simulación-galicia;simular-préstamo-con-datos-válidos",
         "keyword": "Scenario",
-        "line": 11,
-        "name": "Obtener exitosamente token de acceso con credenciales de cliente",
-        "tags": [
-          {
-            "name": "@smoke",
-            "line": 10
-          },
-          {
-            "name": "@auth",
-            "line": 10
-          },
-          {
-            "name": "@auth-token",
-            "line": 10
-          }
-        ],
-        "type": "scenario",
+        "line": 10,
+        "name": "Simular préstamo con datos válidos",
         "steps": [
           {
             "keyword": "Before",
             "hidden": true,
-            "match": {
-              "location": "tests\\features\\support\\hooks.js:15"
-            },
             "result": {
               "status": "passed",
-              "duration": 1000000
+              "duration": 887699
             }
           },
           {
             "arguments": [],
             "keyword": "Given ",
             "line": 7,
-            "name": "el servicio de autenticación está disponible",
+            "name": "el servicio de simulación Galicia está disponible",
             "match": {
-              "location": "tests\\features\\step_definitions\\auth_steps.js:6"
+              "location": "tests\\features\\step_definitions\\galicia-simulation_steps.js:13"
             },
             "result": {
               "status": "passed",
-              "duration": 0
+              "duration": 6792700
             }
           },
           {
             "arguments": [],
-            "keyword": "And ",
-            "line": 8,
-            "name": "tengo credenciales de cliente válidas",
+            "keyword": "Given ",
+            "line": 11,
+            "name": "tengo datos de simulación Galicia válidos",
             "match": {
-              "location": "tests\\features\\step_definitions\\auth_steps.js:11"
+              "location": "tests\\features\\step_definitions\\galicia-simulation_steps.js:18"
             },
             "result": {
               "status": "passed",
-              "duration": 1000000
+              "duration": 1629400
             }
           },
           {
             "arguments": [],
             "keyword": "When ",
             "line": 12,
-            "name": "envío una petición POST al endpoint de autenticación",
+            "name": "envío una petición POST a \"/galicia/v1/agfi/gateway-nera/prestamo/simulacion\"",
             "match": {
-              "location": "tests\\features\\step_definitions\\auth_steps.js:37"
+              "location": "tests\\features\\step_definitions\\api_steps.js:84"
             },
             "result": {
               "status": "passed",
-              "duration": 294000000
+              "duration": 10790777399
             }
           },
           {
@@ -85,52 +62,461 @@
             "line": 13,
             "name": "debería recibir un código de estado 200",
             "match": {
-              "location": "tests\\features\\step_definitions\\auth_steps.js:45"
+              "location": "tests\\features\\step_definitions\\comafi-auth_steps.js:45"
             },
             "result": {
               "status": "passed",
-              "duration": 1000000
+              "duration": 2809199
             }
           },
           {
             "arguments": [],
             "keyword": "And ",
             "line": 14,
-            "name": "la respuesta debería contener un token de acceso válido",
+            "name": "la respuesta debería contener el campo meta",
             "match": {
-              "location": "tests\\features\\step_definitions\\auth_steps.js:50"
+              "location": "tests\\features\\step_definitions\\galicia_eligibility_steps.js:83"
             },
             "result": {
               "status": "passed",
-              "duration": 2000000
+              "duration": 2472099
             }
           },
           {
             "arguments": [],
             "keyword": "And ",
             "line": 15,
-            "name": "debería guardar el token de acceso para uso futuro",
+            "name": "la respuesta debería contener el campo data",
             "match": {
-              "location": "tests\\features\\step_definitions\\auth_steps.js:87"
+              "location": "tests\\features\\step_definitions\\galicia_eligibility_steps.js:63"
             },
             "result": {
               "status": "passed",
-              "duration": 3000000
+              "duration": 1033600
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 16,
+            "name": "la respuesta debería contener numeroTransaccion en data",
+            "match": {
+              "location": "tests\\features\\step_definitions\\galicia-simulation_steps.js:124"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1193000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 17,
+            "name": "la respuesta debería contener idOferta en data",
+            "match": {
+              "location": "tests\\features\\step_definitions\\galicia-simulation_steps.js:132"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1279000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 18,
+            "name": "la respuesta debería contener idLinea en data",
+            "match": {
+              "location": "tests\\features\\step_definitions\\galicia-simulation_steps.js:140"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1076699
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 19,
+            "name": "la respuesta debería contener datosFinancieros en data",
+            "match": {
+              "location": "tests\\features\\step_definitions\\galicia-simulation_steps.js:148"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1675199
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 20,
+            "name": "la respuesta debería contener cuotas en data",
+            "match": {
+              "location": "tests\\features\\step_definitions\\galicia-simulation_steps.js:193"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1094200
             }
           },
           {
             "keyword": "After",
             "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 440099
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@smoke",
+            "line": 9
+          },
+          {
+            "name": "@galicia",
+            "line": 9
+          },
+          {
+            "name": "@simulation",
+            "line": 9
+          },
+          {
+            "name": "@simulation-flow",
+            "line": 9
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "api-de-simulación-galicia;validar-estructura-completa-de-respuesta-de-simulación-galicia",
+        "keyword": "Scenario",
+        "line": 23,
+        "name": "Validar estructura completa de respuesta de simulación Galicia",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 303600
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 7,
+            "name": "el servicio de simulación Galicia está disponible",
             "match": {
-              "location": "tests\\features\\support\\hooks.js:30"
+              "location": "tests\\features\\step_definitions\\galicia-simulation_steps.js:13"
             },
             "result": {
               "status": "passed",
-              "duration": 0
+              "duration": 293299
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 24,
+            "name": "tengo datos de simulación Galicia válidos",
+            "match": {
+              "location": "tests\\features\\step_definitions\\galicia-simulation_steps.js:18"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 422099
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 25,
+            "name": "envío una petición POST a \"/galicia/v1/agfi/gateway-nera/prestamo/simulacion\"",
+            "match": {
+              "location": "tests\\features\\step_definitions\\api_steps.js:84"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 6777702999
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 26,
+            "name": "debería recibir un código de estado 200",
+            "match": {
+              "location": "tests\\features\\step_definitions\\comafi-auth_steps.js:45"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 479800
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 27,
+            "name": "la respuesta debería contener el campo meta",
+            "match": {
+              "location": "tests\\features\\step_definitions\\galicia_eligibility_steps.js:83"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 293399
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 28,
+            "name": "la respuesta debería contener el campo data",
+            "match": {
+              "location": "tests\\features\\step_definitions\\galicia_eligibility_steps.js:63"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 324899
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 29,
+            "name": "la respuesta debería contener numeroTransaccion en data",
+            "match": {
+              "location": "tests\\features\\step_definitions\\galicia-simulation_steps.js:124"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 270599
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 30,
+            "name": "la respuesta debería contener idOferta en data",
+            "match": {
+              "location": "tests\\features\\step_definitions\\galicia-simulation_steps.js:132"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 244700
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 31,
+            "name": "la respuesta debería contener idLinea en data",
+            "match": {
+              "location": "tests\\features\\step_definitions\\galicia-simulation_steps.js:140"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 323400
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 32,
+            "name": "la respuesta debería contener datosFinancieros en data",
+            "match": {
+              "location": "tests\\features\\step_definitions\\galicia-simulation_steps.js:148"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 282899
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 33,
+            "name": "los datosFinancieros deberían contener campos requeridos",
+            "match": {
+              "location": "tests\\features\\step_definitions\\galicia-simulation_steps.js:155"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2611600
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 34,
+            "name": "la respuesta debería contener cuotas en data",
+            "match": {
+              "location": "tests\\features\\step_definitions\\galicia-simulation_steps.js:193"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 452799
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 35,
+            "name": "las cuotas deberían contener campos requeridos",
+            "match": {
+              "location": "tests\\features\\step_definitions\\galicia-simulation_steps.js:201"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2044499
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 334100
             }
           }
-        ]
+        ],
+        "tags": [
+          {
+            "name": "@galicia",
+            "line": 22
+          },
+          {
+            "name": "@simulation",
+            "line": 22
+          },
+          {
+            "name": "@validation",
+            "line": 22
+          },
+          {
+            "name": "@simulation-flow",
+            "line": 22
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "api-de-simulación-galicia;simular-préstamo-con-datos-inválidos",
+        "keyword": "Scenario",
+        "line": 38,
+        "name": "Simular préstamo con datos inválidos",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 234000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 7,
+            "name": "el servicio de simulación Galicia está disponible",
+            "match": {
+              "location": "tests\\features\\step_definitions\\galicia-simulation_steps.js:13"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 226899
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 39,
+            "name": "tengo datos de simulación Galicia inválidos",
+            "match": {
+              "location": "tests\\features\\step_definitions\\galicia-simulation_steps.js:69"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 923599
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 40,
+            "name": "envío una petición POST a \"/galicia/v1/agfi/gateway-nera/prestamo/simulacion\"",
+            "match": {
+              "location": "tests\\features\\step_definitions\\api_steps.js:84"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 332477599
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 41,
+            "name": "debería recibir un código de estado de error 400 o 403",
+            "match": {
+              "location": "tests\\features\\step_definitions\\comafi-auth_steps.js:64"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1484799
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 42,
+            "name": "la respuesta debería contener el campo errors o meta",
+            "match": {
+              "location": "tests\\features\\step_definitions\\galicia_eligibility_steps.js:198"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 741799
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 294499
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@galicia",
+            "line": 37
+          },
+          {
+            "name": "@simulation",
+            "line": 37
+          },
+          {
+            "name": "@error",
+            "line": 37
+          },
+          {
+            "name": "@simulation-flow",
+            "line": 37
+          }
+        ],
+        "type": "scenario"
       }
-    ]
+    ],
+    "id": "api-de-simulación-galicia",
+    "line": 1,
+    "keyword": "Feature",
+    "name": "API de Simulación Galicia",
+    "tags": [],
+    "uri": "tests\\features\\api\\galicia-simulacion.feature"
   }
 ]
