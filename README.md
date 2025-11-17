@@ -50,7 +50,8 @@ Repositorio de pruebas de automatización QA con Pactum.js nativo y BDD con Cucu
 
 Antes de instalar, asegúrate de tener instalado:
 
-- **Node.js** (versión 18 o superior) - [Descargar Node.js](https://nodejs.org/)
+- **Node.js** (versión 20, 22 o >=24) - [Descargar Node.js](https://nodejs.org/)
+  - ⚠️ **Importante**: Cucumber.js requiere Node.js 20, 22 o >=24. Node.js 18 no es compatible.
 - **npm** (viene incluido con Node.js) - Verificar versión: `npm --version`
 - **Git** (para clonar el repositorio) - [Descargar Git](https://git-scm.com/)
 
@@ -58,7 +59,7 @@ Antes de instalar, asegúrate de tener instalado:
 
 ```bash
 # Verificar Node.js
-node --version    # Debe ser v18 o superior
+node --version    # Debe ser v20, v22 o >=v24 (Cucumber requiere estas versiones)
 
 # Verificar npm
 npm --version     # Debe ser v9 o superior
