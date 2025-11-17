@@ -33,6 +33,10 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
     
     strategy:
       matrix:
@@ -82,16 +86,28 @@ jobs:
         if: always()
         run: npm run report:html
       
+      - name: Sanitizar nombre de artefacto
+        if: always()
+        id: sanitize
+        run: |
+          # Reemplazar : con - en el nombre del artefacto
+          SANITIZED_NAME=$(echo "cucumber-report-${{ matrix.test-suite }}" | tr ':' '-')
+          echo "name=$SANITIZED_NAME" >> $GITHUB_OUTPUT
+          echo "Sanitized artifact name: $SANITIZED_NAME"
+      
       - name: Subir reporte HTML como artefacto
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: cucumber-report-${{ matrix.test-suite }}
+          name: ${{ steps.sanitize.outputs.name }}
           path: reports/cucumber-report.html
           retention-days: 30
       
-      - name: Publicar reporte en GitHub Pages (si es main)
+      # Nota: GitHub Pages requiere configuración adicional en Settings → Pages
+      # Para habilitar, ve a Settings → Pages y selecciona "GitHub Actions" como source
+      - name: Publicar reporte en GitHub Pages (opcional, requiere configuración)
         if: always() && github.ref == 'refs/heads/main' && matrix.test-suite == 'comafi:full'
+        continue-on-error: true
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -100,6 +116,7 @@ jobs:
           keep_files: false
           user_name: 'github-actions[bot]'
           user_email: 'github-actions[bot]@users.noreply.github.com'
+          allow_empty_commit: true
 
   # Job para consolidar reportes y enviar email
   send-report:
@@ -129,6 +146,7 @@ jobs:
           echo "" >> reports-consolidated/index.md
           echo "### Reportes Disponibles:" >> reports-consolidated/index.md
           find artifacts -name "*.html" -type f | while read file; do
+            # El nombre del artefacto ahora tiene - en lugar de :
             suite=$(basename $(dirname $file) | sed 's/cucumber-report-//')
             echo "- [$suite]($suite/cucumber-report.html)" >> reports-consolidated/index.md
           done
