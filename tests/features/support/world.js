@@ -142,23 +142,54 @@ function CustomWorld({ attach, parameters }) {
       return response;
     } catch (error) {
       // Mejorar mensaje de error para diagnóstico
-      if (error.message && error.message.includes('Timeout')) {
-        console.error(`⏱️ Timeout alcanzado para: ${url}`);
-        console.error(`   Endpoint: ${endpoint}`);
-        const isGalicia = endpointLower.includes('/galicia/') || 
-                         endpointLower.includes('galicia') ||
-                         urlLower.includes('/galicia/') || 
-                         urlLower.includes('galicia') ||
-                         urlLower.includes('middleware-galicia');
-        console.error(`   Timeout configurado: ${isGalicia ? '90s' : '30s'}`);
-        console.error(`   Esto puede indicar problemas de conectividad o que el servidor no responde`);
-      } else if (error.message && error.message.includes('ECONNREFUSED')) {
-        console.error(`🚫 Conexión rechazada para: ${url}`);
-        console.error(`   El servidor puede no estar accesible desde esta ubicación`);
-      } else if (error.message && error.message.includes('ENOTFOUND')) {
-        console.error(`🔍 DNS no resuelto para: ${url}`);
+      const isGalicia = endpointLower.includes('/galicia/') || 
+                       endpointLower.includes('galicia') ||
+                       urlLower.includes('/galicia/') || 
+                       urlLower.includes('galicia') ||
+                       urlLower.includes('middleware-galicia');
+      
+      console.error(`\n❌ Error en petición a: ${url}`);
+      console.error(`   Endpoint: ${endpoint}`);
+      console.error(`   Método: ${method.toUpperCase()}`);
+      console.error(`   Tipo de error: ${error.name || 'Unknown'}`);
+      console.error(`   Mensaje: ${error.message || 'Sin mensaje'}`);
+      
+      if (error.message && (error.message.includes('Timeout') || error.message.includes('timeout'))) {
+        console.error(`\n⏱️ TIMEOUT DETECTADO:`);
+        console.error(`   Timeout configurado: ${isGalicia ? '90s (HTTP)' : '30s (HTTP)'}`);
+        console.error(`   Tiempo transcurrido: ~40s (sugiere timeout de conexión TCP)`);
+        console.error(`\n💡 DIAGNÓSTICO:`);
+        console.error(`   El servidor no está respondiendo o no es accesible desde esta ubicación.`);
+        console.error(`   Posibles causas:`);
+        console.error(`   1. El servidor está en una red privada o requiere VPN`);
+        console.error(`   2. Firewall bloquea las conexiones desde GitHub Actions`);
+        console.error(`   3. El servidor no está disponible o está caído`);
+        console.error(`   4. Problemas de conectividad de red`);
+        if (isGalicia) {
+          console.error(`\n⚠️ NOTA ESPECÍFICA PARA GALICIA:`);
+          console.error(`   Los tests de Galicia pueden fallar en GitHub Actions debido a restricciones de red.`);
+          console.error(`   Esto es esperado si el servidor no es accesible desde internet público.`);
+        }
+      } else if (error.message && (error.message.includes('ECONNREFUSED') || error.code === 'ECONNREFUSED')) {
+        console.error(`\n🚫 CONEXIÓN RECHAZADA:`);
+        console.error(`   El servidor rechazó la conexión en: ${url}`);
+        console.error(`   Posibles causas:`);
+        console.error(`   1. El servidor no está escuchando en ese puerto`);
+        console.error(`   2. Firewall bloquea las conexiones`);
+        console.error(`   3. El servidor no es accesible desde esta ubicación`);
+      } else if (error.message && (error.message.includes('ENOTFOUND') || error.code === 'ENOTFOUND')) {
+        console.error(`\n🔍 DNS NO RESUELTO:`);
+        console.error(`   No se pudo resolver el dominio: ${url}`);
         console.error(`   Verifica que el dominio sea correcto y accesible`);
+      } else if (error.message && (error.message.includes('ETIMEDOUT') || error.code === 'ETIMEDOUT')) {
+        console.error(`\n⏱️ TIMEOUT DE CONEXIÓN:`);
+        console.error(`   La conexión TCP no se pudo establecer en el tiempo esperado`);
+        console.error(`   Esto indica que el servidor no es accesible desde esta ubicación`);
+      } else {
+        console.error(`\n⚠️ ERROR DESCONOCIDO:`);
+        console.error(`   Stack trace: ${error.stack || 'No disponible'}`);
       }
+      
       throw error;
     }
   };

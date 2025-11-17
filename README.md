@@ -844,17 +844,25 @@ Consulta la documentación de tu proveedor de email para obtener los valores cor
 1. **Accesibilidad del servidor**: El servidor de Galicia (`midware-partners-gateway-middleware-galicia-staging-avafy.dev.nera-agro.com`) puede no ser accesible desde las IPs de GitHub Actions
 2. **Firewall/Whitelist**: El servidor puede estar configurado para bloquear conexiones desde internet público
 3. **Red privada/VPN**: El servidor puede requerir VPN o estar en una red privada
+4. **Timeout de conexión TCP**: Si el servidor no responde, la conexión TCP falla después de ~40 segundos (antes del timeout HTTP de 90s)
+
+**Síntomas**:
+- Los tests fallan con `Error: Timeout reached` después de ~40 segundos
+- El mensaje indica "The operation was canceled"
+- Esto sugiere que la conexión TCP no se puede establecer (no es un problema de timeout HTTP)
 
 **Solución implementada**:
 - Los tests de Galicia están configurados con `continue-on-error: true`
 - Esto permite que el workflow continúe aunque los tests de Galicia fallen
 - Los tests funcionan correctamente en local
 - Se genera un warning en el workflow cuando los tests de Galicia fallan
+- **Diagnóstico mejorado**: Los logs ahora muestran información detallada sobre el tipo de error (timeout de conexión, conexión rechazada, DNS no resuelto, etc.)
 
 **Para resolver**:
 - Verifica que el servidor de Galicia sea accesible desde internet público
 - Si el servidor requiere whitelist, agrega las IPs de GitHub Actions
 - Considera usar un runner self-hosted si el servidor está en una red privada
+- Verifica la conectividad con: `curl -v https://midware-partners-gateway-middleware-galicia-staging-avafy.dev.nera-agro.com`
 
 ## 🤝 Contribución
 
