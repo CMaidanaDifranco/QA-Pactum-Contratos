@@ -14,7 +14,7 @@
             "hidden": true,
             "result": {
               "status": "passed",
-              "duration": 244874
+              "duration": 245077
             }
           },
           {
@@ -27,7 +27,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 512041
+              "duration": 528405
             }
           },
           {
@@ -40,7 +40,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 391346
+              "duration": 458966
             }
           },
           {
@@ -53,7 +53,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 419921
+              "duration": 444828
             }
           },
           {
@@ -66,7 +66,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 817500673
+              "duration": 533471299
             }
           },
           {
@@ -79,7 +79,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 401186
+              "duration": 344181
             }
           },
           {
@@ -92,7 +92,7 @@
             },
             "result": {
               "status": "failed",
-              "duration": 409259,
+              "duration": 363147,
               "error_message": "AssertionError\n    + expected - actual\n\n    -REJECTED\n    +APPROVED\n\n    at CustomWorld.<anonymous> (/home/runner/work/QA-Pactum-Contratos/QA-Pactum-Contratos/tests/features/step_definitions/comafi-eligibility_steps.js:58:40)"
             }
           },
@@ -127,7 +127,7 @@
             "hidden": true,
             "result": {
               "status": "passed",
-              "duration": 300789
+              "duration": 333171
             }
           }
         ],
@@ -159,7 +159,7 @@
             "hidden": true,
             "result": {
               "status": "passed",
-              "duration": 218176
+              "duration": 234416
             }
           },
           {
@@ -172,7 +172,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 345491
+              "duration": 315739
             }
           },
           {
@@ -185,7 +185,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 265132
+              "duration": 272187
             }
           },
           {
@@ -198,7 +198,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 204600
+              "duration": 192288
             }
           },
           {
@@ -211,7 +211,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 1008242029
+              "duration": 926015276
             }
           },
           {
@@ -224,7 +224,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 225489
+              "duration": 191716
             }
           },
           {
@@ -237,7 +237,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 1093531
+              "duration": 1084678
             }
           },
           {
@@ -250,7 +250,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 844979
+              "duration": 1317200
             }
           },
           {
@@ -263,7 +263,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 935347
+              "duration": 1220341
             }
           },
           {
@@ -276,7 +276,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 1216490
+              "duration": 1313133
             }
           },
           {
@@ -284,7 +284,7 @@
             "hidden": true,
             "result": {
               "status": "passed",
-              "duration": 319594
+              "duration": 306710
             }
           }
         ],
