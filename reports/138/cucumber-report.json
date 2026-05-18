@@ -1,0 +1,381 @@
+[
+  {
+    "description": "  Como usuario del sistema\n  Quiero simular un préstamo\n  Para poder calcular las condiciones y montos de financiamiento",
+    "elements": [
+      {
+        "description": "",
+        "id": "api-de-simulación-comafi;simular-préstamo-con-datos-válidos",
+        "keyword": "Scenario",
+        "line": 11,
+        "name": "Simular préstamo con datos válidos",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 235348
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 7,
+            "name": "tengo un token de acceso válido",
+            "match": {
+              "location": "tests/features/step_definitions/api_steps.js:5"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 554846
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 8,
+            "name": "el servicio de simulación está disponible",
+            "match": {
+              "location": "tests/features/step_definitions/comafi-simulation_steps.js:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 399696
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 12,
+            "name": "tengo datos de simulación válidos",
+            "match": {
+              "location": "tests/features/step_definitions/comafi-simulation_steps.js:11"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 349161
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 13,
+            "name": "envío una petición POST a \"/api/v1/products/loans/simulation\"",
+            "match": {
+              "location": "tests/features/step_definitions/api_steps.js:84"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 190327730
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 14,
+            "name": "debería recibir un código de estado 200",
+            "match": {
+              "location": "tests/features/step_definitions/comafi-auth_steps.js:45"
+            },
+            "result": {
+              "status": "failed",
+              "duration": 621351,
+              "error_message": "AssertionError\n    + expected - actual\n\n    -400\n    +200\n\n    at CustomWorld.<anonymous> (/home/runner/work/QA-Pactum-Contratos/QA-Pactum-Contratos/tests/features/step_definitions/comafi-auth_steps.js:60:31)"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 15,
+            "name": "la respuesta debería contener datos de simulación válidos",
+            "match": {
+              "location": "tests/features/step_definitions/comafi-simulation_steps.js:72"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 16,
+            "name": "la respuesta debería contener información de cuotas",
+            "match": {
+              "location": "tests/features/step_definitions/comafi-simulation_steps.js:80"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 17,
+            "name": "la respuesta debería contener información de intereses",
+            "match": {
+              "location": "tests/features/step_definitions/comafi-simulation_steps.js:88"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 18,
+            "name": "la respuesta debería contener información de montos",
+            "match": {
+              "location": "tests/features/step_definitions/comafi-simulation_steps.js:99"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 214169
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@smoke",
+            "line": 10
+          },
+          {
+            "name": "@simulation",
+            "line": 10
+          },
+          {
+            "name": "@simulation-flow",
+            "line": 10
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "api-de-simulación-comafi;validar-estructura-completa-de-respuesta-de-simulación",
+        "keyword": "Scenario",
+        "line": 21,
+        "name": "Validar estructura completa de respuesta de simulación",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 147104
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 7,
+            "name": "tengo un token de acceso válido",
+            "match": {
+              "location": "tests/features/step_definitions/api_steps.js:5"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 404134
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 8,
+            "name": "el servicio de simulación está disponible",
+            "match": {
+              "location": "tests/features/step_definitions/comafi-simulation_steps.js:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 203960
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 22,
+            "name": "tengo datos de simulación válidos",
+            "match": {
+              "location": "tests/features/step_definitions/comafi-simulation_steps.js:11"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 186338
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 23,
+            "name": "envío una petición POST a \"/api/v1/products/loans/simulation\"",
+            "match": {
+              "location": "tests/features/step_definitions/api_steps.js:84"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 187600483
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 24,
+            "name": "debería recibir un código de estado 200",
+            "match": {
+              "location": "tests/features/step_definitions/comafi-auth_steps.js:45"
+            },
+            "result": {
+              "status": "failed",
+              "duration": 367566,
+              "error_message": "AssertionError\n    + expected - actual\n\n    -400\n    +200\n\n    at CustomWorld.<anonymous> (/home/runner/work/QA-Pactum-Contratos/QA-Pactum-Contratos/tests/features/step_definitions/comafi-auth_steps.js:60:31)"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 25,
+            "name": "la respuesta debería contener el campo id_simulation",
+            "match": {
+              "location": "tests/features/step_definitions/comafi-simulation_steps.js:110"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 26,
+            "name": "la respuesta debería contener el campo selected_account",
+            "match": {
+              "location": "tests/features/step_definitions/comafi-simulation_steps.js:118"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 27,
+            "name": "la respuesta debería contener el campo cft",
+            "match": {
+              "location": "tests/features/step_definitions/comafi-simulation_steps.js:126"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 28,
+            "name": "la respuesta debería contener el campo tna",
+            "match": {
+              "location": "tests/features/step_definitions/comafi-simulation_steps.js:134"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 29,
+            "name": "la respuesta debería contener el campo tea",
+            "match": {
+              "location": "tests/features/step_definitions/comafi-simulation_steps.js:142"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 30,
+            "name": "la respuesta debería contener el campo credit_net_amount",
+            "match": {
+              "location": "tests/features/step_definitions/comafi-simulation_steps.js:150"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 31,
+            "name": "la respuesta debería contener el campo total_amount",
+            "match": {
+              "location": "tests/features/step_definitions/comafi-simulation_steps.js:158"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 32,
+            "name": "la respuesta debería contener el campo installments_details",
+            "match": {
+              "location": "tests/features/step_definitions/comafi-simulation_steps.js:166"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 203891
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@simulation",
+            "line": 20
+          },
+          {
+            "name": "@validation",
+            "line": 20
+          },
+          {
+            "name": "@simulation-flow",
+            "line": 20
+          }
+        ],
+        "type": "scenario"
+      }
+    ],
+    "id": "api-de-simulación-comafi",
+    "line": 1,
+    "keyword": "Feature",
+    "name": "API de Simulación Comafi",
+    "tags": [],
+    "uri": "tests/features/api/comafi-simulacion.feature"
+  }
+]
