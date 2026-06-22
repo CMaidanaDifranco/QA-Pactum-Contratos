@@ -1,0 +1,316 @@
+[
+  {
+    "description": "  Como usuario del sistema\n  Quiero consultar la elegibilidad de préstamos\n  Para poder determinar si un CUIT es apto para una oferta crediticia",
+    "elements": [
+      {
+        "description": "",
+        "id": "api-de-elegibilidad-comafi;consultar-elegibilidad-con-cuit-válido",
+        "keyword": "Scenario",
+        "line": 11,
+        "name": "Consultar elegibilidad con CUIT válido",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 184396
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 7,
+            "name": "tengo un token de acceso válido",
+            "match": {
+              "location": "tests/features/step_definitions/api_steps.js:5"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 555695
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 8,
+            "name": "el servicio de elegibilidad está disponible",
+            "match": {
+              "location": "tests/features/step_definitions/comafi-eligibility_steps.js:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 386140
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 12,
+            "name": "tengo datos de elegibilidad válidos",
+            "match": {
+              "location": "tests/features/step_definitions/comafi-eligibility_steps.js:11"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 358538
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 13,
+            "name": "envío una petición POST a \"/api/v1/products/loans/eligibility\"",
+            "match": {
+              "location": "tests/features/step_definitions/api_steps.js:84"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 884277949
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 14,
+            "name": "debería recibir un código de estado 200",
+            "match": {
+              "location": "tests/features/step_definitions/comafi-auth_steps.js:45"
+            },
+            "result": {
+              "status": "failed",
+              "duration": 593702,
+              "error_message": "AssertionError\n    + expected - actual\n\n    -500\n    +200\n\n    at CustomWorld.<anonymous> (/home/runner/work/QA-Pactum-Contratos/QA-Pactum-Contratos/tests/features/step_definitions/comafi-auth_steps.js:60:31)"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 15,
+            "name": "la respuesta debería contener elegibilidad aprobada",
+            "match": {
+              "location": "tests/features/step_definitions/comafi-eligibility_steps.js:55"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 16,
+            "name": "la respuesta debería contener is_eligible como true",
+            "match": {
+              "location": "tests/features/step_definitions/comafi-eligibility_steps.js:62"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 17,
+            "name": "la respuesta debería contener un mensaje amigable",
+            "match": {
+              "location": "tests/features/step_definitions/comafi-eligibility_steps.js:69"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 150004
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@smoke",
+            "line": 10
+          },
+          {
+            "name": "@eligibility",
+            "line": 10
+          },
+          {
+            "name": "@eligibility-flow",
+            "line": 10
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "api-de-elegibilidad-comafi;validar-estructura-completa-de-respuesta-de-elegibilidad",
+        "keyword": "Scenario",
+        "line": 20,
+        "name": "Validar estructura completa de respuesta de elegibilidad",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 169593
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 7,
+            "name": "tengo un token de acceso válido",
+            "match": {
+              "location": "tests/features/step_definitions/api_steps.js:5"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 327281
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 8,
+            "name": "el servicio de elegibilidad está disponible",
+            "match": {
+              "location": "tests/features/step_definitions/comafi-eligibility_steps.js:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 185028
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 21,
+            "name": "tengo datos de elegibilidad válidos",
+            "match": {
+              "location": "tests/features/step_definitions/comafi-eligibility_steps.js:11"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 157978
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 22,
+            "name": "envío una petición POST a \"/api/v1/products/loans/eligibility\"",
+            "match": {
+              "location": "tests/features/step_definitions/api_steps.js:84"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1064606624
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 23,
+            "name": "debería recibir un código de estado 200",
+            "match": {
+              "location": "tests/features/step_definitions/comafi-auth_steps.js:45"
+            },
+            "result": {
+              "status": "failed",
+              "duration": 374201,
+              "error_message": "AssertionError\n    + expected - actual\n\n    -500\n    +200\n\n    at CustomWorld.<anonymous> (/home/runner/work/QA-Pactum-Contratos/QA-Pactum-Contratos/tests/features/step_definitions/comafi-auth_steps.js:60:31)"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 24,
+            "name": "la respuesta debería contener el campo eligibility",
+            "match": {
+              "location": "tests/features/step_definitions/comafi-eligibility_steps.js:80"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 25,
+            "name": "la respuesta debería contener el campo is_eligible",
+            "match": {
+              "location": "tests/features/step_definitions/comafi-eligibility_steps.js:87"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 26,
+            "name": "la respuesta debería contener el campo friendly_message",
+            "match": {
+              "location": "tests/features/step_definitions/comafi-eligibility_steps.js:94"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 27,
+            "name": "la respuesta debería contener el campo reasons",
+            "match": {
+              "location": "tests/features/step_definitions/comafi-eligibility_steps.js:101"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 132469
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@eligibility",
+            "line": 19
+          },
+          {
+            "name": "@validation",
+            "line": 19
+          },
+          {
+            "name": "@eligibility-flow",
+            "line": 19
+          }
+        ],
+        "type": "scenario"
+      }
+    ],
+    "id": "api-de-elegibilidad-comafi",
+    "line": 1,
+    "keyword": "Feature",
+    "name": "API de Elegibilidad Comafi",
+    "tags": [],
+    "uri": "tests/features/api/comafi-eligibility.feature"
+  }
+]
