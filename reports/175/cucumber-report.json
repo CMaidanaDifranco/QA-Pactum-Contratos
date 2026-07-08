@@ -1,0 +1,514 @@
+[
+  {
+    "description": "  Como usuario del sistema\n  Quiero autenticarme con la API de Comafi\n  Para poder acceder a recursos protegidos",
+    "elements": [
+      {
+        "description": "",
+        "id": "api-de-autenticación-comafi;obtener-exitosamente-token-de-acceso-con-credenciales-de-cliente",
+        "keyword": "Scenario",
+        "line": 11,
+        "name": "Obtener exitosamente token de acceso con credenciales de cliente",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 469609
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 7,
+            "name": "el servicio de autenticación está disponible",
+            "match": {
+              "location": "tests/features/step_definitions/comafi-auth_steps.js:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 4774848
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 8,
+            "name": "tengo credenciales de cliente válidas",
+            "match": {
+              "location": "tests/features/step_definitions/comafi-auth_steps.js:11"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1187385
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 12,
+            "name": "envío una petición POST al endpoint de autenticación",
+            "match": {
+              "location": "tests/features/step_definitions/comafi-auth_steps.js:37"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1214266368
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 13,
+            "name": "debería recibir un código de estado 200",
+            "match": {
+              "location": "tests/features/step_definitions/comafi-auth_steps.js:45"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2580556
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 14,
+            "name": "la respuesta debería contener un token de acceso válido",
+            "match": {
+              "location": "tests/features/step_definitions/comafi-auth_steps.js:77"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2694029
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 15,
+            "name": "debería guardar el token de acceso para uso futuro",
+            "match": {
+              "location": "tests/features/step_definitions/comafi-auth_steps.js:114"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1248259
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 339525
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@smoke",
+            "line": 10
+          },
+          {
+            "name": "@auth",
+            "line": 10
+          },
+          {
+            "name": "@auth-token",
+            "line": 10
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "api-de-autenticación-comafi;fallar-autenticación-con-credenciales-inválidas",
+        "keyword": "Scenario",
+        "line": 18,
+        "name": "Fallar autenticación con credenciales inválidas",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 258675
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 7,
+            "name": "el servicio de autenticación está disponible",
+            "match": {
+              "location": "tests/features/step_definitions/comafi-auth_steps.js:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 279673
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 8,
+            "name": "tengo credenciales de cliente válidas",
+            "match": {
+              "location": "tests/features/step_definitions/comafi-auth_steps.js:11"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 183362
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 19,
+            "name": "tengo credenciales de cliente inválidas",
+            "match": {
+              "location": "tests/features/step_definitions/comafi-auth_steps.js:24"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 196889
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 20,
+            "name": "envío una petición POST al endpoint de autenticación",
+            "match": {
+              "location": "tests/features/step_definitions/comafi-auth_steps.js:37"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 202384416
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 21,
+            "name": "debería recibir un código de estado 400",
+            "match": {
+              "location": "tests/features/step_definitions/comafi-auth_steps.js:45"
+            },
+            "result": {
+              "status": "failed",
+              "duration": 440404,
+              "error_message": "AssertionError\n    + expected - actual\n\n    -401\n    +400\n\n    at CustomWorld.<anonymous> (/home/runner/work/QA-Pactum-Contratos/QA-Pactum-Contratos/tests/features/step_definitions/comafi-auth_steps.js:60:31)"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 22,
+            "name": "la respuesta debería contener un mensaje de error",
+            "match": {
+              "location": "tests/features/step_definitions/comafi-auth_steps.js:132"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 177272
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@auth",
+            "line": 17
+          },
+          {
+            "name": "@negative",
+            "line": 17
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "api-de-autenticación-comafi;validar-estructura-completa-de-respuesta-del-token",
+        "keyword": "Scenario",
+        "line": 25,
+        "name": "Validar estructura completa de respuesta del token",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 217807
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 7,
+            "name": "el servicio de autenticación está disponible",
+            "match": {
+              "location": "tests/features/step_definitions/comafi-auth_steps.js:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 171109
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 8,
+            "name": "tengo credenciales de cliente válidas",
+            "match": {
+              "location": "tests/features/step_definitions/comafi-auth_steps.js:11"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 213299
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 26,
+            "name": "envío una petición POST al endpoint de autenticación",
+            "match": {
+              "location": "tests/features/step_definitions/comafi-auth_steps.js:37"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 208266068
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 27,
+            "name": "debería recibir un código de estado 200",
+            "match": {
+              "location": "tests/features/step_definitions/comafi-auth_steps.js:45"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 235672
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 28,
+            "name": "la respuesta debería contener un access_token",
+            "match": {
+              "location": "tests/features/step_definitions/comafi-auth_steps.js:85"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 273752
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 29,
+            "name": "la respuesta debería contener expires_in con valor 1800",
+            "match": {
+              "location": "tests/features/step_definitions/comafi-auth_steps.js:93"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 258775
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 30,
+            "name": "la respuesta debería contener token_type con valor \"bearer\"",
+            "match": {
+              "location": "tests/features/step_definitions/comafi-auth_steps.js:100"
+            },
+            "result": {
+              "status": "failed",
+              "duration": 399057,
+              "error_message": "AssertionError\n    + expected - actual\n\n    -Bearer\n    +bearer\n\n    at CustomWorld.<anonymous> (/home/runner/work/QA-Pactum-Contratos/QA-Pactum-Contratos/tests/features/step_definitions/comafi-auth_steps.js:103:39)"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 31,
+            "name": "la respuesta debería contener scope con valor \"email profile\"",
+            "match": {
+              "location": "tests/features/step_definitions/comafi-auth_steps.js:107"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 32,
+            "name": "debería guardar el token de acceso para uso futuro",
+            "match": {
+              "location": "tests/features/step_definitions/comafi-auth_steps.js:114"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 300001
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@auth",
+            "line": 24
+          },
+          {
+            "name": "@token-validation",
+            "line": 24
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "api-de-autenticación-comafi;el-tiempo-de-respuesta-de-autenticación-debe-ser-aceptable",
+        "keyword": "Scenario",
+        "line": 35,
+        "name": "El tiempo de respuesta de autenticación debe ser aceptable",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 146745
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 7,
+            "name": "el servicio de autenticación está disponible",
+            "match": {
+              "location": "tests/features/step_definitions/comafi-auth_steps.js:6"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 179535
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 8,
+            "name": "tengo credenciales de cliente válidas",
+            "match": {
+              "location": "tests/features/step_definitions/comafi-auth_steps.js:11"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 177392
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 36,
+            "name": "envío una petición POST al endpoint de autenticación",
+            "match": {
+              "location": "tests/features/step_definitions/comafi-auth_steps.js:37"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 207280081
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 37,
+            "name": "debería recibir un código de estado 200",
+            "match": {
+              "location": "tests/features/step_definitions/comafi-auth_steps.js:45"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 236582
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 38,
+            "name": "el tiempo de respuesta debería ser menor a 5 segundos",
+            "match": {
+              "location": "tests/features/step_definitions/comafi-auth_steps.js:139"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1239072
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 39,
+            "name": "la respuesta debería contener un token de acceso válido",
+            "match": {
+              "location": "tests/features/step_definitions/comafi-auth_steps.js:77"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 258523
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 148026
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@auth",
+            "line": 34
+          },
+          {
+            "name": "@performance",
+            "line": 34
+          }
+        ],
+        "type": "scenario"
+      }
+    ],
+    "id": "api-de-autenticación-comafi",
+    "line": 1,
+    "keyword": "Feature",
+    "name": "API de Autenticación Comafi",
+    "tags": [],
+    "uri": "tests/features/auth/comafi-authentication.feature"
+  }
+]
